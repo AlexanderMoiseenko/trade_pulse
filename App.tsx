@@ -1,44 +1,47 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { store, hydrateStore } from './src/store';
+import { AppNavigator } from './src/navigation';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+function App(): React.JSX.Element {
+  const [isHydrated, setIsHydrated] = useState(false);
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+  useEffect(() => {
+    const initStore = async () => {
+      try {
+        await hydrateStore();
+      } catch (error) {
+        console.error('Error hydrating store:', error);
+      }
+      setIsHydrated(true);
+    };
+
+    initStore();
+  }, []);
+
+  if (!isHydrated) {
+    // Поки дані вичитуються з пам'яті — показуємо красивий лоадер
+    return (
+      <View style={styles.splash}>
+        <ActivityIndicator size="large" color="#4CD964" />
+      </View>
+    );
+  }
 
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
+    <Provider store={store}>
+      <AppNavigator />
+    </Provider>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  splash: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#121212',
   },
 });
 

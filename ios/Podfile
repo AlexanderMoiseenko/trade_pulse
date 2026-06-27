@@ -15,7 +15,7 @@ if linkage != nil
 end
 
 target 'trade_pulse' do
-  pod 'NitroModules', :path => '../node_modules/react-native-nitro-modules/NitroModules.podspec'
+  # pod 'NitroModules', :path => '../node_modules/react-native-nitro-modules/NitroModules.podspec'
   config = use_native_modules!
 
   use_react_native!(
