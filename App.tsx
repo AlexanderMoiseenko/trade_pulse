@@ -4,6 +4,7 @@ import { ActivityIndicator, StyleSheet, View, StatusBar } from 'react-native';
 import { store, hydrateStore } from './src/store';
 import { AppNavigator } from './src/navigation';
 import { colors } from './src/theme';
+import { ErrorBoundary } from './src/components/ErrorBoundary';
 
 function App(): React.JSX.Element {
   const [isHydrated, setIsHydrated] = useState(false);
@@ -31,7 +32,9 @@ function App(): React.JSX.Element {
             <ActivityIndicator size="large" color={colors.accent.green} />
           </View>
         ) : (
-          <AppNavigator />
+          <ErrorBoundary>
+            <AppNavigator />
+          </ErrorBoundary>
         )}
       </View>
     </Provider>
