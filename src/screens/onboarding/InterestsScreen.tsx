@@ -13,6 +13,7 @@ import { FlashList } from '@shopify/flash-list';
 import { OnboardingStackParamList } from '../../navigation/OnboardingNavigator';
 import { updateOnboardingData } from '../../store/userSlice';
 import { ONBOARDING_STEPS, INTEREST_TAGS } from '../../constants/onboarding';
+import { colors, spacing, borderRadius } from '../../theme';
 
 import { ProgressBar } from '../../components/ui/ProgressBar';
 
@@ -161,20 +162,20 @@ export const InterestsScreen = ({ navigation }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0A0A0C',
-    padding: 24,
+    backgroundColor: colors.bg.primary,
+    padding: spacing.xxl,
     justifyContent: 'space-between',
-    paddingTop: 60,
+    paddingTop: spacing.layoutTop,
   },
   content: {
     flex: 1,
   },
-  step: { color: '#34C759', fontWeight: '600', marginBottom: 8 },
-  title: { fontSize: 28, fontWeight: '900', color: '#FFF', marginBottom: 16 },
+  step: { color: colors.accent.green, fontWeight: '600', marginBottom: spacing.sm },
+  title: { fontSize: 28, fontWeight: '900', color: colors.text.primary, marginBottom: spacing.lg },
   listContainer: {
     flex: 1,
-    marginTop: 8,
-    marginBottom: 8,
+    marginTop: spacing.sm,
+    marginBottom: spacing.sm,
   },
   listContent: {
     paddingBottom: 160,
@@ -182,10 +183,10 @@ const styles = StyleSheet.create({
   tagCard: {
     flex: 1,
     margin: 6,
-    borderRadius: 14,
+    borderRadius: borderRadius.lg,
     borderWidth: 1,
-    borderColor: '#2C2C2E',
-    backgroundColor: '#1C1C1E',
+    borderColor: colors.bg.elevated,
+    backgroundColor: colors.bg.secondary,
     height: 84,
     overflow: 'hidden',
     position: 'relative',
@@ -196,10 +197,10 @@ const styles = StyleSheet.create({
     left: -1,
     right: -1,
     bottom: -1,
-    backgroundColor: '#1C2E24',
-    borderColor: '#34C759',
+    backgroundColor: colors.state.selectedBg,
+    borderColor: colors.accent.green,
     borderWidth: 1,
-    borderRadius: 14,
+    borderRadius: borderRadius.lg,
   },
   cardInner: {
     flex: 1,
@@ -209,21 +210,21 @@ const styles = StyleSheet.create({
     zIndex: 2,
   },
   tagText: {
-    color: '#E5E5EA',
+    color: colors.text.subtle,
     fontSize: 13,
     fontWeight: '600',
     lineHeight: 18,
     textAlign: 'center',
   },
   selectedCardText: {
-    color: '#34C759',
+    color: colors.accent.green,
   },
   button: {
-    backgroundColor: '#34C759',
-    borderRadius: 12,
-    padding: 16,
+    backgroundColor: colors.accent.green,
+    borderRadius: borderRadius.md,
+    padding: spacing.lg,
     alignItems: 'center',
-    marginBottom: 60,
+    marginBottom: spacing.layoutBottom,
   },
-  buttonText: { color: '#000', fontWeight: '700', fontSize: 16 },
+  buttonText: { color: colors.text.dark, fontWeight: '700', fontSize: 16 },
 });

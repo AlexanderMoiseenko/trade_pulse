@@ -3,6 +3,7 @@ import { Provider } from 'react-redux';
 import { ActivityIndicator, StyleSheet, View, StatusBar } from 'react-native';
 import { store, hydrateStore } from './src/store';
 import { AppNavigator } from './src/navigation';
+import { colors } from './src/theme';
 
 function App(): React.JSX.Element {
   const [isHydrated, setIsHydrated] = useState(false);
@@ -22,12 +23,12 @@ function App(): React.JSX.Element {
 
   return (
     <Provider store={store}>
-      <StatusBar barStyle="light-content" backgroundColor="#0A0A0C" />
+      <StatusBar barStyle="light-content" backgroundColor={colors.bg.primary} />
 
       <View style={styles.rootWrapper}>
         {!isHydrated ? (
           <View style={styles.splash}>
-            <ActivityIndicator size="large" color="#34C759" />
+            <ActivityIndicator size="large" color={colors.accent.green} />
           </View>
         ) : (
           <AppNavigator />
@@ -42,11 +43,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0A0A0C',
+    backgroundColor: colors.bg.primary,
   },
   rootWrapper: {
     flex: 1,
-    backgroundColor: '#0A0A0C',
+    backgroundColor: colors.bg.primary,
   },
 });
 

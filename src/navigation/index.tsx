@@ -5,6 +5,7 @@ import { useAppSelector } from '../store/hooks';
 import { selectIsRegistered } from '../store/selectors/userSelectors';
 import { OnboardingNavigator } from './OnboardingNavigator';
 import { FeedScreen } from '../screens/FeedScreen';
+import { colors } from '../theme';
 
 export type RootStackParamList = {
   OnboardingFlow: undefined;
@@ -17,7 +18,7 @@ const TradePulseTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: '#0A0A0C',
+    background: colors.bg.primary,
   },
 };
 
@@ -30,7 +31,7 @@ export const AppNavigator = () => {
         screenOptions={{
           headerShown: false,
           animation: 'slide_from_right',
-          contentStyle: { backgroundColor: '#0A0A0C' },
+          contentStyle: { backgroundColor: colors.bg.primary },
         }}
       >
         {!isRegistered ? (

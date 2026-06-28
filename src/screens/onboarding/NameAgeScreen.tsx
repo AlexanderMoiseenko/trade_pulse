@@ -17,6 +17,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { OnboardingStackParamList } from '../../navigation/OnboardingNavigator';
 import { isIOS } from '../../helpers/utils';
 import { ONBOARDING_STEPS } from '../../constants/onboarding';
+import { colors, spacing, borderRadius } from '../../theme';
 
 import { ProgressBar } from '../../components/ui/ProgressBar';
 
@@ -88,7 +89,7 @@ export const NameAgeScreen = ({ navigation }: Props) => {
                 formik.touched.name && formik.errors.name && styles.inputError,
               ]}
               placeholder="Enter your name..."
-              placeholderTextColor="#555"
+              placeholderTextColor={colors.text.placeholder}
               onChangeText={formik.handleChange('name')}
               value={formik.values.name}
             />
@@ -105,7 +106,7 @@ export const NameAgeScreen = ({ navigation }: Props) => {
                 formik.touched.age && formik.errors.age && styles.inputError,
               ]}
               placeholder="Enter your age..."
-              placeholderTextColor="#555"
+              placeholderTextColor={colors.text.placeholder}
               keyboardType="numeric"
               onChangeText={formik.handleChange('age')}
               value={formik.values.age}
@@ -136,10 +137,10 @@ export const NameAgeScreen = ({ navigation }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0A0A0C',
-    padding: 24,
+    backgroundColor: colors.bg.primary,
+    padding: spacing.xxl,
     justifyContent: 'space-between',
-    paddingTop: 60,
+    paddingTop: spacing.layoutTop,
   },
   inner: {
     flex: 1,
@@ -147,42 +148,42 @@ const styles = StyleSheet.create({
   },
   progressContainer: {
     height: 4,
-    backgroundColor: '#1C1C1E',
+    backgroundColor: colors.bg.secondary,
     borderRadius: 2,
-    marginBottom: 32,
+    marginBottom: spacing.xxxl,
     width: '100%',
   },
-  progressBar: { height: '100%', backgroundColor: '#34C759', borderRadius: 2 },
-  step: { color: '#34C759', fontWeight: '600', marginBottom: 8 },
-  title: { fontSize: 28, fontWeight: '900', color: '#FFF', marginBottom: 24 },
+  progressBar: { height: '100%', backgroundColor: colors.accent.green, borderRadius: 2 },
+  step: { color: colors.accent.green, fontWeight: '600', marginBottom: spacing.sm },
+  title: { fontSize: 28, fontWeight: '900', color: colors.text.primary, marginBottom: spacing.xxl },
   inputContainer: {
     position: 'relative',
     marginBottom: 28, // keep space for error message
   },
-  label: { color: '#8E8E93', marginBottom: 8, fontSize: 14 },
+  label: { color: colors.text.secondary, marginBottom: spacing.sm, fontSize: 14 },
   input: {
-    backgroundColor: '#1C1C1E',
-    color: '#FFF',
-    borderRadius: 12,
-    padding: 16,
+    backgroundColor: colors.bg.secondary,
+    color: colors.text.primary,
+    borderRadius: borderRadius.md,
+    padding: spacing.lg,
     fontSize: 16,
     borderWidth: 1,
     borderColor: 'transparent', // prevent border flicker
   },
-  inputError: { borderColor: '#FF3B30' },
+  inputError: { borderColor: colors.accent.red },
   error: {
     position: 'absolute',
     bottom: -20, // keep text under the input
     left: 4,
-    color: '#FF3B30',
+    color: colors.accent.red,
     fontSize: 12,
   },
   button: {
-    backgroundColor: '#34C759',
-    borderRadius: 12,
-    padding: 16,
+    backgroundColor: colors.accent.green,
+    borderRadius: borderRadius.md,
+    padding: spacing.lg,
     alignItems: 'center',
-    marginBottom: 60,
+    marginBottom: spacing.layoutBottom,
   },
-  buttonText: { color: '#000', fontWeight: '700', fontSize: 16 },
+  buttonText: { color: colors.text.dark, fontWeight: '700', fontSize: 16 },
 });

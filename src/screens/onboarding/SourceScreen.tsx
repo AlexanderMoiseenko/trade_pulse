@@ -14,6 +14,7 @@ import {
   completeOnboarding,
 } from '../../store/userSlice';
 import { isIOS } from '../../helpers/utils';
+import { colors, spacing, borderRadius } from '../../theme';
 
 import { ProgressBar } from '../../components/ui/ProgressBar';
 
@@ -44,7 +45,7 @@ export const SourceScreen = () => {
           <TextInput
             style={styles.input}
             placeholder="For example: GitHub, Google, LinkedIn, Reddit, Twitter, from friends..."
-            placeholderTextColor="#555"
+            placeholderTextColor={colors.text.placeholder}
             onChangeText={formik.handleChange('source')}
             value={formik.values.source}
           />
@@ -60,36 +61,36 @@ export const SourceScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0A0A0C',
-    padding: 24,
+    backgroundColor: colors.bg.primary,
+    padding: spacing.xxl,
     justifyContent: 'space-between',
-    paddingTop: 60,
+    paddingTop: spacing.layoutTop,
   },
   progressContainer: {
     height: 4,
-    backgroundColor: '#1C1C1E',
+    backgroundColor: colors.bg.secondary,
     borderRadius: 2,
-    marginBottom: 32,
+    marginBottom: spacing.xxxl,
     width: '100%',
   },
-  progressBar: { height: '100%', backgroundColor: '#34C759', borderRadius: 2 },
-  step: { color: '#8E8E93', fontWeight: '600', marginBottom: 8 },
-  title: { fontSize: 24, fontWeight: '900', color: '#FFF', marginBottom: 24 },
+  progressBar: { height: '100%', backgroundColor: colors.accent.green, borderRadius: 2 },
+  step: { color: colors.text.secondary, fontWeight: '600', marginBottom: spacing.sm },
+  title: { fontSize: 24, fontWeight: '900', color: colors.text.primary, marginBottom: spacing.xxl },
   input: {
-    backgroundColor: '#1C1C1E',
-    color: '#FFF',
-    borderRadius: 12,
-    padding: 16,
+    backgroundColor: colors.bg.secondary,
+    color: colors.text.primary,
+    borderRadius: borderRadius.md,
+    padding: spacing.lg,
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#34C759',
-    borderRadius: 12,
-    padding: 16,
+    backgroundColor: colors.accent.green,
+    borderRadius: borderRadius.md,
+    padding: spacing.lg,
     alignItems: 'center',
-    marginBottom: 60,
+    marginBottom: spacing.layoutBottom,
   },
-  buttonText: { color: '#000', fontWeight: '700', fontSize: 16 },
+  buttonText: { color: colors.text.dark, fontWeight: '700', fontSize: 16 },
   inner: {
     flex: 1,
     justifyContent: 'space-between',

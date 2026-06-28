@@ -6,6 +6,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { OnboardingStackParamList } from '../../navigation/OnboardingNavigator';
 import { updateOnboardingData } from '../../store/userSlice';
 import { ONBOARDING_STEPS, PROFESSIONS } from '../../constants/onboarding';
+import { colors, spacing, borderRadius } from '../../theme';
 
 import { ProgressBar } from '../../components/ui/ProgressBar';
 
@@ -79,35 +80,35 @@ export const ProfessionScreen = ({ navigation }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0A0A0C',
-    padding: 24,
+    backgroundColor: colors.bg.primary,
+    padding: spacing.xxl,
     justifyContent: 'space-between',
-    paddingTop: 60,
+    paddingTop: spacing.layoutTop,
   },
-  step: { color: '#34C759', fontWeight: '600', marginBottom: 8 },
-  title: { fontSize: 28, fontWeight: '900', color: '#FFF', marginBottom: 24 },
+  step: { color: colors.accent.green, fontWeight: '600', marginBottom: spacing.sm },
+  title: { fontSize: 28, fontWeight: '900', color: colors.text.primary, marginBottom: spacing.xxl },
   listContainer: {
     flex: 1,
     width: '100%',
-    marginBottom: 16,
+    marginBottom: spacing.lg,
   },
   card: {
-    backgroundColor: '#1C1C1E',
-    padding: 20,
-    borderRadius: 12,
-    marginBottom: 12,
+    backgroundColor: colors.bg.secondary,
+    padding: spacing.xl,
+    borderRadius: borderRadius.md,
+    marginBottom: spacing.md,
     borderWidth: 1,
-    borderColor: '#2C2C2E',
+    borderColor: colors.bg.elevated,
   },
-  selectedCard: { borderColor: '#34C759', backgroundColor: '#1C2E24' },
-  cardText: { color: '#FFF', fontSize: 16, fontWeight: '500' },
-  selectedCardText: { color: '#34C759' },
+  selectedCard: { borderColor: colors.accent.green, backgroundColor: colors.state.selectedBg },
+  cardText: { color: colors.text.primary, fontSize: 16, fontWeight: '500' },
+  selectedCardText: { color: colors.accent.green },
   button: {
-    backgroundColor: '#34C759',
-    borderRadius: 12,
-    padding: 16,
+    backgroundColor: colors.accent.green,
+    borderRadius: borderRadius.md,
+    padding: spacing.lg,
     alignItems: 'center',
-    marginBottom: 60,
+    marginBottom: spacing.layoutBottom,
   },
-  buttonText: { color: '#000', fontWeight: '700', fontSize: 16 },
+  buttonText: { color: colors.text.dark, fontWeight: '700', fontSize: 16 },
 });

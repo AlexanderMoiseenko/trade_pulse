@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useAppDispatch } from '../store/hooks';
 import { resetUser } from '../store/userSlice';
+import { colors, spacing, borderRadius } from '../theme';
 
 export const FeedScreen = () => {
   const dispatch = useAppDispatch();
@@ -27,30 +28,30 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0A0A0C', // midnight
-    padding: 24,
+    backgroundColor: colors.bg.primary,
+    padding: spacing.xxl,
   },
   title: {
     fontSize: 24,
     fontWeight: '900',
-    color: '#FFF',
-    marginBottom: 8,
+    color: colors.text.primary,
+    marginBottom: spacing.sm,
   },
   subtitle: {
     fontSize: 16,
-    color: '#8E8E93',
-    marginBottom: 32,
+    color: colors.text.secondary,
+    marginBottom: spacing.xxxl,
   },
   button: {
-    backgroundColor: '#FF3B30',
-    borderRadius: 12,
+    backgroundColor: colors.accent.red,
+    borderRadius: borderRadius.md,
     paddingVertical: 14,
-    paddingHorizontal: 24,
+    paddingHorizontal: spacing.xxl,
     alignItems: 'center',
     justifyContent: 'center',
   },
   buttonText: {
-    color: '#FFF',
+    color: colors.text.primary,
     fontSize: 16,
     fontWeight: '700',
   },
