@@ -20,20 +20,18 @@ function App(): React.JSX.Element {
     initStore();
   }, []);
 
-  if (!isHydrated) {
-    return (
-      <View style={styles.splash}>
-        <StatusBar barStyle="light-content" backgroundColor="#0A0A0C" />
-        <ActivityIndicator size="large" color="#34C759" />
-      </View>
-    );
-  }
-
   return (
     <Provider store={store}>
       <StatusBar barStyle="light-content" backgroundColor="#0A0A0C" />
+
       <View style={styles.rootWrapper}>
-        <AppNavigator />
+        {!isHydrated ? (
+          <View style={styles.splash}>
+            <ActivityIndicator size="large" color="#34C759" />
+          </View>
+        ) : (
+          <AppNavigator />
+        )}
       </View>
     </Provider>
   );

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { FlashList } from '@shopify/flash-list';
+import { useAppDispatch } from '../../store/hooks';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { OnboardingStackParamList } from '../../navigation/OnboardingNavigator';
 import { updateOnboardingData } from '../../store/userSlice';
@@ -17,10 +18,8 @@ interface Props {
   navigation: ProfessionScreenNavProp;
 }
 
-import { FlashList } from '@shopify/flash-list';
-
 export const ProfessionScreen = ({ navigation }: Props) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [selected, setSelected] = useState<string>('');
 
   const handleNext = () => {

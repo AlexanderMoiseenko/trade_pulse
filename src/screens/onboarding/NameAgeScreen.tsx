@@ -10,9 +10,9 @@ import {
 } from 'react-native';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { selectUserName, selectUserAge } from '../../store/selectors/userSelectors';
 import { updateOnboardingData } from '../../store/userSlice';
-import { RootState } from '../../store';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { OnboardingStackParamList } from '../../navigation/OnboardingNavigator';
 import { isIOS } from '../../helpers/utils';
@@ -30,12 +30,13 @@ interface Props {
 }
 
 export const NameAgeScreen = ({ navigation }: Props) => {
-  const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.user);
+  const dispatch = useAppDispatch();
+  const userName = useAppSelector(selectUserName);
+  const userAge = useAppSelector(selectUserAge);
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
   const formik = useFormik({
-    initialValues: { name: user.name, age: user.age ? String(user.age) : '' },
+    initialValues: { name: userName, age: userAge ? String(userAge) : '' },
     validationSchema: Yup.object({
       name: Yup.string()
         .typeError('Should be a text')

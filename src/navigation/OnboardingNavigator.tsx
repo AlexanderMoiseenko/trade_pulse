@@ -1,7 +1,7 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store';
+import { useAppSelector } from '../store/hooks';
+import { selectCurrentStep } from '../store/selectors/userSelectors';
 import { NameAgeScreen } from '../screens/onboarding/NameAgeScreen';
 import { ProfessionScreen } from '../screens/onboarding/ProfessionScreen';
 import { InterestsScreen } from '../screens/onboarding/InterestsScreen';
@@ -18,7 +18,7 @@ export type OnboardingStackParamList = {
 const Stack = createNativeStackNavigator<OnboardingStackParamList>();
 
 export const OnboardingNavigator = () => {
-  const currentStep = useSelector((state: RootState) => state.user.currentStep);
+  const currentStep = useAppSelector(selectCurrentStep);
 
   return (
     <Stack.Navigator

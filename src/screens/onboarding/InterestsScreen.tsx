@@ -7,7 +7,7 @@ import {
   Animated,
   Easing,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../store/hooks';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlashList } from '@shopify/flash-list';
 import { OnboardingStackParamList } from '../../navigation/OnboardingNavigator';
@@ -101,7 +101,7 @@ const AnimatedTagCard = ({
 };
 
 export const InterestsScreen = ({ navigation }: Props) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [selected, setSelected] = useState<string[]>([]);
 
   const toggleTag = (tag: string) => {

@@ -8,7 +8,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../store/hooks';
 import {
   updateOnboardingData,
   completeOnboarding,
@@ -18,7 +18,7 @@ import { isIOS } from '../../helpers/utils';
 import { ProgressBar } from '../../components/ui/ProgressBar';
 
 export const SourceScreen = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const formik = useFormik({
     initialValues: { source: '' },

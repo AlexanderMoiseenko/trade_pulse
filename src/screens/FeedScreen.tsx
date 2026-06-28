@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../store/hooks';
 import { resetUser } from '../store/userSlice';
 
 export const FeedScreen = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const handleReset = () => {
     dispatch(resetUser());

@@ -1,8 +1,8 @@
 import React from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store';
+import { useAppSelector } from '../store/hooks';
+import { selectIsRegistered } from '../store/selectors/userSelectors';
 import { OnboardingNavigator } from './OnboardingNavigator';
 import { FeedScreen } from '../screens/FeedScreen';
 
@@ -22,9 +22,7 @@ const TradePulseTheme = {
 };
 
 export const AppNavigator = () => {
-  const isRegistered = useSelector(
-    (state: RootState) => state.user.isRegistered,
-  );
+  const isRegistered = useAppSelector(selectIsRegistered);
 
   return (
     <NavigationContainer theme={TradePulseTheme}>
