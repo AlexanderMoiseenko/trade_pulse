@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
@@ -13,17 +13,26 @@ export type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const TradePulseTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: '#0A0A0C',
+  },
+};
+
 export const AppNavigator = () => {
   const isRegistered = useSelector(
     (state: RootState) => state.user.isRegistered,
   );
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={TradePulseTheme}>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
           animation: 'slide_from_right',
+          contentStyle: { backgroundColor: '#0A0A0C' },
         }}
       >
         {!isRegistered ? (

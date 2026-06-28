@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View, StatusBar } from 'react-native';
 import { store, hydrateStore } from './src/store';
 import { AppNavigator } from './src/navigation';
 
@@ -21,17 +21,20 @@ function App(): React.JSX.Element {
   }, []);
 
   if (!isHydrated) {
-    // Поки дані вичитуються з пам'яті — показуємо красивий лоадер
     return (
       <View style={styles.splash}>
-        <ActivityIndicator size="large" color="#4CD964" />
+        <StatusBar barStyle="light-content" backgroundColor="#0A0A0C" />
+        <ActivityIndicator size="large" color="#34C759" />
       </View>
     );
   }
 
   return (
     <Provider store={store}>
-      <AppNavigator />
+      <StatusBar barStyle="light-content" backgroundColor="#0A0A0C" />
+      <View style={styles.rootWrapper}>
+        <AppNavigator />
+      </View>
     </Provider>
   );
 }
@@ -41,7 +44,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#121212',
+    backgroundColor: '#0A0A0C',
+  },
+  rootWrapper: {
+    flex: 1,
+    backgroundColor: '#0A0A0C',
   },
 });
 

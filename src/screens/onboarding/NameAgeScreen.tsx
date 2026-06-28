@@ -18,6 +18,8 @@ import { OnboardingStackParamList } from '../../navigation/OnboardingNavigator';
 import { isIOS } from '../../helpers/utils';
 import { ONBOARDING_STEPS } from '../../constants/onboarding';
 
+import { ProgressBar } from '../../components/ui/ProgressBar';
+
 type NameAgeScreenNavProp = NativeStackNavigationProp<
   OnboardingStackParamList,
   typeof ONBOARDING_STEPS.NAME_AGE
@@ -72,44 +74,46 @@ export const NameAgeScreen = ({ navigation }: Props) => {
     >
       <View style={styles.inner}>
         <View>
-          <View style={styles.progressContainer}>
-            <View style={[styles.progressBar, { width: '25%' }]} />
-          </View>
+          <ProgressBar currentStep={1} totalSteps={4} />
 
           <Text style={styles.step}>Step 1 of 4</Text>
           <Text style={styles.title}>Name and Age</Text>
 
-          <Text style={styles.label}>Your name</Text>
-          <TextInput
-            style={[
-              styles.input,
-              formik.touched.name && formik.errors.name && styles.inputError,
-            ]}
-            placeholder="Enter your name..."
-            placeholderTextColor="#555"
-            onChangeText={formik.handleChange('name')}
-            value={formik.values.name}
-          />
-          {formik.touched.name && formik.errors.name && (
-            <Text style={styles.error}>{formik.errors.name}</Text>
-          )}
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Your name</Text>
+            <TextInput
+              style={[
+                styles.input,
+                formik.touched.name && formik.errors.name && styles.inputError,
+              ]}
+              placeholder="Enter your name..."
+              placeholderTextColor="#555"
+              onChangeText={formik.handleChange('name')}
+              value={formik.values.name}
+            />
+            {formik.touched.name && formik.errors.name && (
+              <Text style={styles.error}>{formik.errors.name}</Text>
+            )}
+          </View>
 
-          <Text style={styles.label}>Your Age</Text>
-          <TextInput
-            style={[
-              styles.input,
-              formik.touched.age && formik.errors.age && styles.inputError,
-            ]}
-            placeholder="Enter your age..."
-            placeholderTextColor="#555"
-            keyboardType="numeric"
-            onChangeText={formik.handleChange('age')}
-            value={formik.values.age}
-            onSubmitEditing={() => formik.handleSubmit()}
-          />
-          {formik.touched.age && formik.errors.age && (
-            <Text style={styles.error}>{formik.errors.age}</Text>
-          )}
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Your Age</Text>
+            <TextInput
+              style={[
+                styles.input,
+                formik.touched.age && formik.errors.age && styles.inputError,
+              ]}
+              placeholder="Enter your age..."
+              placeholderTextColor="#555"
+              keyboardType="numeric"
+              onChangeText={formik.handleChange('age')}
+              value={formik.values.age}
+              onSubmitEditing={() => formik.handleSubmit()}
+            />
+            {formik.touched.age && formik.errors.age && (
+              <Text style={styles.error}>{formik.errors.age}</Text>
+            )}
+          </View>
         </View>
 
         <TouchableWithoutFeedback
@@ -136,6 +140,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: 60,
   },
+  inner: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
   progressContainer: {
     height: 4,
     backgroundColor: '#1C1C1E',
@@ -146,6 +154,10 @@ const styles = StyleSheet.create({
   progressBar: { height: '100%', backgroundColor: '#34C759', borderRadius: 2 },
   step: { color: '#34C759', fontWeight: '600', marginBottom: 8 },
   title: { fontSize: 28, fontWeight: '900', color: '#FFF', marginBottom: 24 },
+  inputContainer: {
+    position: 'relative',
+    marginBottom: 28, // keep space for error message
+  },
   label: { color: '#8E8E93', marginBottom: 8, fontSize: 14 },
   input: {
     backgroundColor: '#1C1C1E',
@@ -153,19 +165,23 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     fontSize: 16,
-    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: 'transparent', // prevent border flicker
   },
-  inputError: { borderColor: '#FF3B30', borderWidth: 1 },
-  error: { color: '#FF3B30', fontSize: 12, marginBottom: 12 },
+  inputError: { borderColor: '#FF3B30' },
+  error: {
+    position: 'absolute',
+    bottom: -20, // keep text under the input
+    left: 4,
+    color: '#FF3B30',
+    fontSize: 12,
+  },
   button: {
     backgroundColor: '#34C759',
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
+    marginBottom: 60,
   },
   buttonText: { color: '#000', fontWeight: '700', fontSize: 16 },
-  inner: {
-    flex: 1,
-    justifyContent: 'space-between',
-  },
 });

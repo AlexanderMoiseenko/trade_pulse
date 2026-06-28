@@ -15,6 +15,8 @@ import {
 } from '../../store/userSlice';
 import { isIOS } from '../../helpers/utils';
 
+import { ProgressBar } from '../../components/ui/ProgressBar';
+
 export const SourceScreen = () => {
   const dispatch = useDispatch();
 
@@ -33,9 +35,7 @@ export const SourceScreen = () => {
     >
       <View style={styles.inner}>
         <View>
-          <View style={styles.progressContainer}>
-            <View style={[styles.progressBar, { width: '100%' }]} />
-          </View>
+          <ProgressBar currentStep={4} totalSteps={4} />
 
           <Text style={styles.step}>Step 4 of 4 (Optional)</Text>
           <Text style={styles.title}>
@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
+    marginBottom: 60,
   },
   buttonText: { color: '#000', fontWeight: '700', fontSize: 16 },
   inner: {

@@ -4,17 +4,9 @@ import { useDispatch } from 'react-redux';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { OnboardingStackParamList } from '../../navigation/OnboardingNavigator';
 import { updateOnboardingData } from '../../store/userSlice';
-import { ONBOARDING_STEPS } from '../../constants/onboarding';
+import { ONBOARDING_STEPS, PROFESSIONS } from '../../constants/onboarding';
 
-const professions = [
-  'Senior Frontend Developer',
-  'Crypto Architect',
-  'Data Scientist',
-  'Day Trader',
-  'Blockchain Developer',
-  'AI Researcher',
-  'Investment Banker',
-] as const;
+import { ProgressBar } from '../../components/ui/ProgressBar';
 
 type ProfessionScreenNavProp = NativeStackNavigationProp<
   OnboardingStackParamList,
@@ -24,6 +16,8 @@ type ProfessionScreenNavProp = NativeStackNavigationProp<
 interface Props {
   navigation: ProfessionScreenNavProp;
 }
+
+import { FlashList } from '@shopify/flash-list';
 
 export const ProfessionScreen = ({ navigation }: Props) => {
   const dispatch = useDispatch();
@@ -41,32 +35,37 @@ export const ProfessionScreen = ({ navigation }: Props) => {
     }
   };
 
+  const renderItem = ({ item }: { item: string }) => (
+    <TouchableOpacity
+      style={[styles.card, selected === item && styles.selectedCard]}
+      onPress={() => setSelected(item)}
+    >
+      <Text
+        style={[
+          styles.cardText,
+          selected === item && styles.selectedCardText,
+        ]}
+      >
+        {item}
+      </Text>
+    </TouchableOpacity>
+  );
+
   return (
     <View style={styles.container}>
-      <View>
-        <View style={styles.progressContainer}>
-          <View style={[styles.progressBar, { width: '50%' }]} />
-        </View>
+      <ProgressBar currentStep={2} totalSteps={4} />
 
-        <Text style={styles.step}>Step 2 of 4</Text>
-        <Text style={styles.title}>Your Profession</Text>
-        {professions.map(p => (
-          <TouchableOpacity
-            key={p}
-            style={[styles.card, selected === p && styles.selectedCard]}
-            onPress={() => setSelected(p)}
-          >
-            <Text
-              style={[
-                styles.cardText,
-                selected === p && styles.selectedCardText,
-              ]}
-            >
-              {p}
-            </Text>
-          </TouchableOpacity>
-        ))}
+      <Text style={styles.step}>Step 2 of 4</Text>
+      <Text style={styles.title}>Your Profession</Text>
+
+      <View style={styles.listContainer}>
+        <FlashList
+          data={PROFESSIONS as unknown as string[]}
+          renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
+        />
       </View>
+
       <TouchableOpacity
         style={[styles.button, !selected && { opacity: 0.5 }]}
         disabled={!selected}
@@ -86,16 +85,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingTop: 60,
   },
-  progressContainer: {
-    height: 4,
-    backgroundColor: '#1C1C1E',
-    borderRadius: 2,
-    marginBottom: 32,
-    width: '100%',
-  },
-  progressBar: { height: '100%', backgroundColor: '#34C759', borderRadius: 2 },
   step: { color: '#34C759', fontWeight: '600', marginBottom: 8 },
   title: { fontSize: 28, fontWeight: '900', color: '#FFF', marginBottom: 24 },
+  listContainer: {
+    flex: 1,
+    width: '100%',
+    marginBottom: 16,
+  },
   card: {
     backgroundColor: '#1C1C1E',
     padding: 20,
@@ -112,6 +108,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     alignItems: 'center',
+    marginBottom: 60,
   },
   buttonText: { color: '#000', fontWeight: '700', fontSize: 16 },
 });

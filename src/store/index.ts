@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import userReducer, { hydrateUser } from './userSlice'; // Імпортуємо наш новий екшен
+import userReducer, { hydrateUser } from './userSlice';
 import { reduxStorage } from '../storage';
 
 const rootReducer = combineReducers({
@@ -14,9 +14,20 @@ export const store = configureStore({
     }),
 });
 
+const debouncedSave = (() => {
+  let timer: ReturnType<typeof setTimeout> | null = null;
+  return (state: ReturnType<typeof store.getState>) => {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(() => {
+      reduxStorage.setItem('root_state', JSON.stringify(state));
+    }, 300);
+  };
+})();
+
 store.subscribe(() => {
-  const state = store.getState();
-  reduxStorage.setItem('root_state', JSON.stringify(state));
+  debouncedSave(store.getState());
 });
 
 export const hydrateStore = async () => {
