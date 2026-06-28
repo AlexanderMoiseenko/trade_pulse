@@ -1,9 +1,11 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import userReducer, { hydrateUser } from './userSlice';
+import { marketApi } from './services/marketApi';
 import { reduxStorage } from '../storage';
 
 const rootReducer = combineReducers({
   user: userReducer,
+  [marketApi.reducerPath]: marketApi.reducer,
 });
 
 export const store = configureStore({
@@ -11,7 +13,7 @@ export const store = configureStore({
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }),
+    }).concat(marketApi.middleware),
 });
 
 const debouncedSave = (() => {
