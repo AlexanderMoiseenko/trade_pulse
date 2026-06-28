@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import { useAppDispatch } from '../../store/hooks';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useAppDispatch } from '../../store/hooks';
 import { OnboardingStackParamList } from '../../navigation/OnboardingNavigator';
 import { updateOnboardingData } from '../../store/userSlice';
 import { ONBOARDING_STEPS, PROFESSIONS } from '../../constants/onboarding';
@@ -22,6 +23,7 @@ interface Props {
 export const ProfessionScreen = ({ navigation }: Props) => {
   const dispatch = useAppDispatch();
   const [selected, setSelected] = useState<string>('');
+  const insets = useSafeAreaInsets();
 
   const handleNext = () => {
     if (selected) {
@@ -35,24 +37,27 @@ export const ProfessionScreen = ({ navigation }: Props) => {
     }
   };
 
-  const renderItem = ({ item }: { item: string }) => (
-    <TouchableOpacity
-      style={[styles.card, selected === item && styles.selectedCard]}
-      onPress={() => setSelected(item)}
-    >
-      <Text
-        style={[
-          styles.cardText,
-          selected === item && styles.selectedCardText,
-        ]}
+  const renderItem = useCallback(
+    ({ item }: { item: string }) => (
+      <TouchableOpacity
+        style={[styles.card, selected === item && styles.selectedCard]}
+        onPress={() => setSelected(item)}
       >
-        {item}
-      </Text>
-    </TouchableOpacity>
+        <Text
+          style={[
+            styles.cardText,
+            selected === item && styles.selectedCardText,
+          ]}
+        >
+          {item}
+        </Text>
+      </TouchableOpacity>
+    ),
+    [selected],
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top + spacing.lg }]}>
       <ProgressBar currentStep={2} totalSteps={4} />
 
       <Text style={styles.step}>Step 2 of 4</Text>
@@ -60,7 +65,8 @@ export const ProfessionScreen = ({ navigation }: Props) => {
 
       <View style={styles.listContainer}>
         <FlashList
-          data={PROFESSIONS as unknown as string[]}
+          data={[...PROFESSIONS]}
+          extraData={selected}
           renderItem={renderItem}
           showsVerticalScrollIndicator={false}
         />
@@ -83,10 +89,18 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg.primary,
     padding: spacing.xxl,
     justifyContent: 'space-between',
-    paddingTop: spacing.layoutTop,
   },
-  step: { color: colors.accent.green, fontWeight: '600', marginBottom: spacing.sm },
-  title: { fontSize: 28, fontWeight: '900', color: colors.text.primary, marginBottom: spacing.xxl },
+  step: {
+    color: colors.accent.green,
+    fontWeight: '600',
+    marginBottom: spacing.sm,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: '900',
+    color: colors.text.primary,
+    marginBottom: spacing.xxl,
+  },
   listContainer: {
     flex: 1,
     width: '100%',
@@ -100,7 +114,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.bg.elevated,
   },
-  selectedCard: { borderColor: colors.accent.green, backgroundColor: colors.state.selectedBg },
+  selectedCard: {
+    borderColor: colors.accent.green,
+    backgroundColor: colors.state.selectedBg,
+  },
   cardText: { color: colors.text.primary, fontSize: 16, fontWeight: '500' },
   selectedCardText: { color: colors.accent.green },
   button: {

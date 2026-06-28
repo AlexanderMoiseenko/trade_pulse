@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 import { useFormik } from 'formik';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppDispatch } from '../../store/hooks';
 import {
   updateOnboardingData,
@@ -15,11 +16,11 @@ import {
 } from '../../store/userSlice';
 import { isIOS } from '../../helpers/utils';
 import { colors, spacing, borderRadius } from '../../theme';
-
 import { ProgressBar } from '../../components/ui/ProgressBar';
 
 export const SourceScreen = () => {
   const dispatch = useAppDispatch();
+  const insets = useSafeAreaInsets();
 
   const formik = useFormik({
     initialValues: { source: '' },
@@ -32,7 +33,7 @@ export const SourceScreen = () => {
   return (
     <KeyboardAvoidingView
       behavior={isIOS ? 'padding' : undefined}
-      style={styles.container}
+      style={[styles.container, { paddingTop: insets.top + spacing.lg }]}
     >
       <View style={styles.inner}>
         <View>
@@ -64,18 +65,18 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg.primary,
     padding: spacing.xxl,
     justifyContent: 'space-between',
-    paddingTop: spacing.layoutTop,
   },
-  progressContainer: {
-    height: 4,
-    backgroundColor: colors.bg.secondary,
-    borderRadius: 2,
-    marginBottom: spacing.xxxl,
-    width: '100%',
+  step: {
+    color: colors.text.secondary,
+    fontWeight: '600',
+    marginBottom: spacing.sm,
   },
-  progressBar: { height: '100%', backgroundColor: colors.accent.green, borderRadius: 2 },
-  step: { color: colors.text.secondary, fontWeight: '600', marginBottom: spacing.sm },
-  title: { fontSize: 24, fontWeight: '900', color: colors.text.primary, marginBottom: spacing.xxl },
+  title: {
+    fontSize: 24,
+    fontWeight: '900',
+    color: colors.text.primary,
+    marginBottom: spacing.xxl,
+  },
   input: {
     backgroundColor: colors.bg.secondary,
     color: colors.text.primary,

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,14 +7,14 @@ import {
   Animated,
   Easing,
 } from 'react-native';
+import { FlashList } from '@shopify/flash-list';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAppDispatch } from '../../store/hooks';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { FlashList } from '@shopify/flash-list';
 import { OnboardingStackParamList } from '../../navigation/OnboardingNavigator';
 import { updateOnboardingData } from '../../store/userSlice';
 import { ONBOARDING_STEPS, INTEREST_TAGS } from '../../constants/onboarding';
 import { colors, spacing, borderRadius } from '../../theme';
-
 import { ProgressBar } from '../../components/ui/ProgressBar';
 
 type InterestsScreenNavProp = NativeStackNavigationProp<
@@ -104,12 +104,13 @@ const AnimatedTagCard = ({
 export const InterestsScreen = ({ navigation }: Props) => {
   const dispatch = useAppDispatch();
   const [selected, setSelected] = useState<string[]>([]);
+  const insets = useSafeAreaInsets();
 
-  const toggleTag = (tag: string) => {
+  const toggleTag = useCallback((tag: string) => {
     setSelected(prev =>
       prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag],
     );
-  };
+  }, []);
 
   const handleNext = () => {
     if (selected.length > 0) {
@@ -123,8 +124,19 @@ export const InterestsScreen = ({ navigation }: Props) => {
     }
   };
 
+  const renderInterestItem = useCallback(
+    ({ item }: { item: string }) => (
+      <AnimatedTagCard
+        item={item}
+        isSelected={selected.includes(item)}
+        onPress={() => toggleTag(item)}
+      />
+    ),
+    [selected, toggleTag],
+  );
+
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { paddingTop: insets.top + spacing.lg }]}>
       <View style={styles.content}>
         <ProgressBar currentStep={3} totalSteps={4} />
 
@@ -134,13 +146,8 @@ export const InterestsScreen = ({ navigation }: Props) => {
         <View style={styles.listContainer}>
           <FlashList
             data={INTEREST_TAGS}
-            renderItem={({ item }) => (
-              <AnimatedTagCard
-                item={item}
-                isSelected={selected.includes(item)}
-                onPress={() => toggleTag(item)}
-              />
-            )}
+            extraData={selected}
+            renderItem={renderInterestItem}
             numColumns={2}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.listContent}
@@ -165,13 +172,21 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg.primary,
     padding: spacing.xxl,
     justifyContent: 'space-between',
-    paddingTop: spacing.layoutTop,
   },
   content: {
     flex: 1,
   },
-  step: { color: colors.accent.green, fontWeight: '600', marginBottom: spacing.sm },
-  title: { fontSize: 28, fontWeight: '900', color: colors.text.primary, marginBottom: spacing.lg },
+  step: {
+    color: colors.accent.green,
+    fontWeight: '600',
+    marginBottom: spacing.sm,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: '900',
+    color: colors.text.primary,
+    marginBottom: spacing.lg,
+  },
   listContainer: {
     flex: 1,
     marginTop: spacing.sm,

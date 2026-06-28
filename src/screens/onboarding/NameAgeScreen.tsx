@@ -10,10 +10,14 @@ import {
 } from 'react-native';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { selectUserName, selectUserAge } from '../../store/selectors/userSelectors';
-import { updateOnboardingData } from '../../store/userSlice';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import {
+  selectUserName,
+  selectUserAge,
+} from '../../store/selectors/userSelectors';
+import { updateOnboardingData } from '../../store/userSlice';
 import { OnboardingStackParamList } from '../../navigation/OnboardingNavigator';
 import { isIOS } from '../../helpers/utils';
 import { ONBOARDING_STEPS } from '../../constants/onboarding';
@@ -34,6 +38,7 @@ export const NameAgeScreen = ({ navigation }: Props) => {
   const dispatch = useAppDispatch();
   const userName = useAppSelector(selectUserName);
   const userAge = useAppSelector(selectUserAge);
+  const insets = useSafeAreaInsets();
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
   const formik = useFormik({
@@ -72,7 +77,7 @@ export const NameAgeScreen = ({ navigation }: Props) => {
   return (
     <KeyboardAvoidingView
       behavior={isIOS ? 'padding' : undefined}
-      style={styles.container}
+      style={[styles.container, { paddingTop: insets.top + spacing.lg }]}
     >
       <View style={styles.inner}>
         <View>
@@ -140,27 +145,31 @@ const styles = StyleSheet.create({
     backgroundColor: colors.bg.primary,
     padding: spacing.xxl,
     justifyContent: 'space-between',
-    paddingTop: spacing.layoutTop,
   },
   inner: {
     flex: 1,
     justifyContent: 'space-between',
   },
-  progressContainer: {
-    height: 4,
-    backgroundColor: colors.bg.secondary,
-    borderRadius: 2,
-    marginBottom: spacing.xxxl,
-    width: '100%',
+  step: {
+    color: colors.accent.green,
+    fontWeight: '600',
+    marginBottom: spacing.sm,
   },
-  progressBar: { height: '100%', backgroundColor: colors.accent.green, borderRadius: 2 },
-  step: { color: colors.accent.green, fontWeight: '600', marginBottom: spacing.sm },
-  title: { fontSize: 28, fontWeight: '900', color: colors.text.primary, marginBottom: spacing.xxl },
+  title: {
+    fontSize: 28,
+    fontWeight: '900',
+    color: colors.text.primary,
+    marginBottom: spacing.xxl,
+  },
   inputContainer: {
     position: 'relative',
     marginBottom: 28, // keep space for error message
   },
-  label: { color: colors.text.secondary, marginBottom: spacing.sm, fontSize: 14 },
+  label: {
+    color: colors.text.secondary,
+    marginBottom: spacing.sm,
+    fontSize: 14,
+  },
   input: {
     backgroundColor: colors.bg.secondary,
     color: colors.text.primary,
