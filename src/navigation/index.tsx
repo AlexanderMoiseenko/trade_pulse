@@ -3,11 +3,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { OnboardingScreen } from '../screens/OnboardingScreen';
+import { OnboardingNavigator } from './OnboardingNavigator';
 import { FeedScreen } from '../screens/FeedScreen';
 
 export type RootStackParamList = {
-  Onboarding: undefined;
+  OnboardingFlow: undefined;
   Feed: undefined;
 };
 
@@ -27,7 +27,7 @@ export const AppNavigator = () => {
         }}
       >
         {!isRegistered ? (
-          <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+          <Stack.Screen name="OnboardingFlow" component={OnboardingNavigator} />
         ) : (
           <Stack.Screen name="Feed" component={FeedScreen} />
         )}
