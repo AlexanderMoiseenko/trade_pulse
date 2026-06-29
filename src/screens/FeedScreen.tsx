@@ -1,17 +1,22 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { resetUser } from '../store/userSlice';
+import { resetUser, setLanguage } from '../store/userSlice';
 import { selectUserName, selectUserBalance } from '../store/selectors/userSelectors';
 import { colors, spacing, borderRadius } from '../theme';
 import { useGetMarketDataQuery, ASSET_NAMES } from '../store/services/marketApi';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { t, changeLanguage, getCurrentLanguage } from '../helpers/i18n';
 
 export const FeedScreen = () => {
   const dispatch = useAppDispatch();
   const name = useAppSelector(selectUserName);
   const balance = useAppSelector(selectUserBalance);
   const insets = useSafeAreaInsets();
+  
+  // Subscribe to language state to trigger instant, smooth local re-renders
+  useAppSelector(state => state.user.language);
+  const currentLang = getCurrentLanguage();
 
   const { data, isLoading, isError, refetch } = useGetMarketDataQuery(undefined, {
     pollingInterval: 5000,
@@ -39,11 +44,11 @@ export const FeedScreen = () => {
       {/* Header */}
       <View style={styles.header}>
         <View>
-          <Text style={styles.welcomeText}>Welcome back,</Text>
-          <Text style={styles.nameText}>{name || 'Trader'}</Text>
+          <Text style={styles.welcomeText}>{t.feed.welcome}</Text>
+          <Text style={styles.nameText}>{name || t.feed.trader}</Text>
         </View>
         <View style={styles.balanceContainer}>
-          <Text style={styles.balanceLabel}>DEMO BALANCE</Text>
+          <Text style={styles.balanceLabel}>{t.feed.balanceLabel}</Text>
           <Text style={styles.balanceValue}>
             ${balance?.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </Text>
@@ -52,10 +57,10 @@ export const FeedScreen = () => {
 
       {/* Markets Header */}
       <View style={styles.marketsHeader}>
-        <Text style={styles.sectionTitle}>Markets</Text>
+        <Text style={styles.sectionTitle}>{t.feed.markets}</Text>
         <View style={styles.liveIndicatorContainer}>
           <View style={styles.liveDot} />
-          <Text style={styles.liveText}>LIVE</Text>
+          <Text style={styles.liveText}>{t.feed.live}</Text>
         </View>
       </View>
 
@@ -64,15 +69,15 @@ export const FeedScreen = () => {
         {isLoading && (
           <View style={styles.centerContainer}>
             <ActivityIndicator size="large" color={colors.accent.green} />
-            <Text style={styles.loadingText}>Fetching market feed...</Text>
+            <Text style={styles.loadingText}>{t.feed.fetching}</Text>
           </View>
         )}
 
         {isError && (
           <View style={styles.centerContainer}>
-            <Text style={styles.errorText}>Failed to load rates</Text>
+            <Text style={styles.errorText}>{t.feed.failed}</Text>
             <TouchableOpacity style={styles.retryButton} onPress={refetch}>
-              <Text style={styles.retryButtonText}>Retry</Text>
+              <Text style={styles.retryButtonText}>{t.feed.retry}</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -114,13 +119,30 @@ export const FeedScreen = () => {
         )}
       </ScrollView>
 
-      {/* Footer reset button */}
-      <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
-        <Text style={styles.resetButtonText}>Reset Onboarding State</Text>
-      </TouchableOpacity>
+      {/* Footer buttons */}
+      <View style={styles.footerContainer}>
+        <TouchableOpacity
+          style={styles.langButton}
+          onPress={() => {
+            const nextLang = currentLang === 'en' ? 'uk' : 'en';
+            changeLanguage(nextLang);
+            dispatch(setLanguage(nextLang));
+          }}
+        >
+          <Text style={styles.footerLinkText}>
+            {currentLang === 'en' ? '🇺🇦 UA' : '🇬🇧 EN'}
+          </Text>
+        </TouchableOpacity>
+
+
+        <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
+          <Text style={styles.resetButtonText}>{t.feed.reset}</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -281,11 +303,29 @@ const styles = StyleSheet.create({
   resetButton: {
     alignItems: 'center',
     paddingVertical: spacing.md,
-    marginTop: spacing.sm,
   },
   resetButtonText: {
     fontSize: 12,
     color: colors.text.secondary,
     textDecorationLine: 'underline',
   },
+  footerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: spacing.sm,
+    paddingVertical: spacing.sm,
+    borderTopWidth: 1,
+    borderTopColor: colors.bg.elevated,
+  },
+  langButton: {
+    paddingVertical: spacing.md,
+  },
+  footerLinkText: {
+    fontSize: 12,
+    color: colors.text.secondary,
+    textDecorationLine: 'underline',
+    fontWeight: '600',
+  },
 });
+

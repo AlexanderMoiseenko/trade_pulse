@@ -4,8 +4,7 @@ import {
   Text,
   View,
   TextInput,
-  TouchableWithoutFeedback,
-  Animated,
+  TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
 import { useFormik } from 'formik';
@@ -22,6 +21,7 @@ import { OnboardingStackParamList } from '../../navigation/OnboardingNavigator';
 import { isIOS } from '../../helpers/utils';
 import { ONBOARDING_STEPS } from '../../constants/onboarding';
 import { colors, spacing, borderRadius } from '../../theme';
+import { t } from '../../helpers/i18n';
 
 import { ProgressBar } from '../../components/ui/ProgressBar';
 
@@ -34,45 +34,40 @@ interface Props {
   navigation: NameAgeScreenNavProp;
 }
 
+const validationSchema = Yup.object().shape({
+  name: Yup.string()
+    .typeError(t.onboarding.yupNameRequired)
+    .min(3, t.onboarding.yupNameRequired)
+    .required(t.onboarding.yupNameRequired),
+  age: Yup.number()
+    .typeError(t.onboarding.yupAgeNumber)
+    .min(18, t.onboarding.yupAgeMin)
+    .required(t.onboarding.yupAgeRequired),
+});
+
 export const NameAgeScreen = ({ navigation }: Props) => {
   const dispatch = useAppDispatch();
   const userName = useAppSelector(selectUserName);
   const userAge = useAppSelector(selectUserAge);
   const insets = useSafeAreaInsets();
-  const scaleAnim = useRef(new Animated.Value(1)).current;
 
   const formik = useFormik({
-    initialValues: { name: userName, age: userAge ? String(userAge) : '' },
-    validationSchema: Yup.object({
-      name: Yup.string()
-        .typeError('Should be a text')
-        .min(3, 'Should be at least 3 characters')
-        .required('Name is required'),
-      age: Yup.number()
-        .typeError('Should be a number')
-        .min(18, 'Should be at least 18 years old')
-        .required('Age is required'),
-    }),
+    initialValues: {
+      name: userName || '',
+      age: userAge ? String(userAge) : '',
+    },
+    validationSchema,
     onSubmit: values => {
       dispatch(
         updateOnboardingData({
           name: values.name,
-          age: Number(values.age),
+          age: parseInt(values.age, 10),
           currentStep: ONBOARDING_STEPS.PROFESSION,
         }),
       );
       navigation.navigate(ONBOARDING_STEPS.PROFESSION);
     },
   });
-
-  const animate = (toValue: number) => {
-    Animated.spring(scaleAnim, {
-      toValue,
-      useNativeDriver: true,
-      tension: 100,
-      friction: 5,
-    }).start();
-  };
 
   return (
     <KeyboardAvoidingView
@@ -83,17 +78,19 @@ export const NameAgeScreen = ({ navigation }: Props) => {
         <View>
           <ProgressBar currentStep={1} totalSteps={4} />
 
-          <Text style={styles.step}>Step 1 of 4</Text>
-          <Text style={styles.title}>Name and Age</Text>
+          <Text style={styles.step}>
+            {t.onboarding.step} 1 {t.onboarding.of} 4
+          </Text>
+          <Text style={styles.title}>{t.onboarding.nameAgeTitle}</Text>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Your name</Text>
+            <Text style={styles.label}>{t.onboarding.nameLabel}</Text>
             <TextInput
               style={[
                 styles.input,
                 formik.touched.name && formik.errors.name && styles.inputError,
               ]}
-              placeholder="Enter your name..."
+              placeholder={t.onboarding.namePlaceholder}
               placeholderTextColor={colors.text.placeholder}
               onChangeText={formik.handleChange('name')}
               value={formik.values.name}
@@ -104,18 +101,17 @@ export const NameAgeScreen = ({ navigation }: Props) => {
           </View>
 
           <View style={styles.inputContainer}>
-            <Text style={styles.label}>Your Age</Text>
+            <Text style={styles.label}>{t.onboarding.ageLabel}</Text>
             <TextInput
               style={[
                 styles.input,
                 formik.touched.age && formik.errors.age && styles.inputError,
               ]}
-              placeholder="Enter your age..."
+              placeholder={t.onboarding.agePlaceholder}
               placeholderTextColor={colors.text.placeholder}
               keyboardType="numeric"
               onChangeText={formik.handleChange('age')}
               value={formik.values.age}
-              onSubmitEditing={() => formik.handleSubmit()}
             />
             {formik.touched.age && formik.errors.age && (
               <Text style={styles.error}>{formik.errors.age}</Text>
@@ -123,17 +119,9 @@ export const NameAgeScreen = ({ navigation }: Props) => {
           </View>
         </View>
 
-        <TouchableWithoutFeedback
-          onPressIn={() => animate(0.95)}
-          onPressOut={() => animate(1)}
-          onPress={() => formik.handleSubmit()}
-        >
-          <Animated.View
-            style={[styles.button, { transform: [{ scale: scaleAnim }] }]}
-          >
-            <Text style={styles.buttonText}>Next</Text>
-          </Animated.View>
-        </TouchableWithoutFeedback>
+        <TouchableOpacity style={styles.button} onPress={() => formik.handleSubmit()}>
+          <Text style={styles.buttonText}>{t.onboarding.next}</Text>
+        </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
   );

@@ -8,6 +8,7 @@ import { OnboardingStackParamList } from '../../navigation/OnboardingNavigator';
 import { updateOnboardingData } from '../../store/userSlice';
 import { ONBOARDING_STEPS, PROFESSIONS } from '../../constants/onboarding';
 import { colors, spacing, borderRadius } from '../../theme';
+import { t } from '../../helpers/i18n';
 
 import { ProgressBar } from '../../components/ui/ProgressBar';
 
@@ -58,27 +59,26 @@ export const ProfessionScreen = ({ navigation }: Props) => {
 
   return (
     <View style={[styles.container, { paddingTop: insets.top + spacing.lg }]}>
-      <ProgressBar currentStep={2} totalSteps={4} />
+      <View style={styles.inner}>
+        <View style={styles.listContainer}>
+          <ProgressBar currentStep={2} totalSteps={4} />
 
-      <Text style={styles.step}>Step 2 of 4</Text>
-      <Text style={styles.title}>Your Profession</Text>
+          <Text style={styles.step}>
+            {t.onboarding.step} 2 {t.onboarding.of} 4
+          </Text>
+          <Text style={styles.title}>{t.onboarding.professionTitle}</Text>
 
-      <View style={styles.listContainer}>
-        <FlashList
-          data={[...PROFESSIONS]}
-          extraData={selected}
-          renderItem={renderItem}
-          showsVerticalScrollIndicator={false}
-        />
+          <FlashList
+            data={[...PROFESSIONS]}
+            renderItem={renderItem}
+            extraData={selected}
+          />
+        </View>
+
+        <TouchableOpacity style={styles.button} onPress={handleNext}>
+          <Text style={styles.buttonText}>{t.onboarding.next}</Text>
+        </TouchableOpacity>
       </View>
-
-      <TouchableOpacity
-        style={[styles.button, !selected && { opacity: 0.5 }]}
-        disabled={!selected}
-        onPress={handleNext}
-      >
-        <Text style={styles.buttonText}>Next</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -88,6 +88,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.bg.primary,
     padding: spacing.xxl,
+    justifyContent: 'space-between',
+  },
+  inner: {
+    flex: 1,
     justifyContent: 'space-between',
   },
   step: {

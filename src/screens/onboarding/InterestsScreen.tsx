@@ -15,6 +15,7 @@ import { OnboardingStackParamList } from '../../navigation/OnboardingNavigator';
 import { updateOnboardingData } from '../../store/userSlice';
 import { ONBOARDING_STEPS, INTEREST_TAGS } from '../../constants/onboarding';
 import { colors, spacing, borderRadius } from '../../theme';
+import { t } from '../../helpers/i18n';
 import { ProgressBar } from '../../components/ui/ProgressBar';
 
 type InterestsScreenNavProp = NativeStackNavigationProp<
@@ -140,27 +141,28 @@ export const InterestsScreen = ({ navigation }: Props) => {
       <View style={styles.content}>
         <ProgressBar currentStep={3} totalSteps={4} />
 
-        <Text style={styles.step}>Step 3 of 4</Text>
-        <Text style={styles.title}>What interests you?</Text>
+        <Text style={styles.step}>
+          {t.onboarding.step} 3 {t.onboarding.of} 4
+        </Text>
+        <Text style={styles.title}>{t.onboarding.interestsTitle}</Text>
 
         <View style={styles.listContainer}>
           <FlashList
             data={INTEREST_TAGS}
-            extraData={selected}
             renderItem={renderInterestItem}
             numColumns={2}
+            extraData={selected}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.listContent}
           />
         </View>
       </View>
 
       <TouchableOpacity
-        style={[styles.button, selected.length === 0 && { opacity: 0.5 }]}
-        disabled={selected.length === 0}
+        style={[styles.button, selected.length === 0 && styles.disabledButton]}
         onPress={handleNext}
+        disabled={selected.length === 0}
       >
-        <Text style={styles.buttonText}>Next</Text>
+        <Text style={styles.buttonText}>{t.onboarding.next}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -240,6 +242,9 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     alignItems: 'center',
     marginBottom: spacing.layoutBottom,
+  },
+  disabledButton: {
+    opacity: 0.5,
   },
   buttonText: { color: colors.text.dark, fontWeight: '700', fontSize: 16 },
 });

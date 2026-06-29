@@ -7,6 +7,7 @@ import {
   StatusBar,
 } from 'react-native';
 import { colors, spacing, borderRadius } from '../theme';
+import { t } from '../helpers/i18n';
 
 interface Props {
   children: ReactNode;
@@ -44,12 +45,12 @@ export class ErrorBoundary extends Component<Props, State> {
               backgroundColor={colors.bg.primary}
             />
             <Text style={styles.emoji}>⚠️</Text>
-            <Text style={styles.title}>Something went wrong</Text>
+            <Text style={styles.title}>{t.errorBoundary.title}</Text>
             <Text style={styles.message}>
-              {this.state.error?.message || 'Something went wrong in the app.'}
+              {this.state.error?.message || t.errorBoundary.message}
             </Text>
             <TouchableOpacity style={styles.button} onPress={this.handleRetry}>
-              <Text style={styles.buttonText}>Try again</Text>
+              <Text style={styles.buttonText}>{t.errorBoundary.retry}</Text>
             </TouchableOpacity>
           </View>
         )

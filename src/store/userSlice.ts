@@ -10,6 +10,7 @@ export interface UserState {
   isRegistered: boolean;
   balance: number;
   currentStep: OnboardingStep;
+  language: 'en' | 'uk';
 }
 
 const initialState: UserState = {
@@ -21,6 +22,7 @@ const initialState: UserState = {
   isRegistered: false,
   balance: 10000,
   currentStep: ONBOARDING_STEPS.NAME_AGE,
+  language: 'en',
 };
 
 export const userSlice = createSlice({
@@ -42,6 +44,9 @@ export const userSlice = createSlice({
     updateBalance: (state, action: PayloadAction<number>) => {
       state.balance += action.payload;
     },
+    setLanguage: (state, action: PayloadAction<'en' | 'uk'>) => {
+      state.language = action.payload;
+    },
     resetUser: () => initialState,
   },
 });
@@ -51,6 +56,8 @@ export const {
   hydrateUser,
   completeOnboarding,
   updateBalance,
+  setLanguage,
   resetUser,
 } = userSlice.actions;
 export default userSlice.reducer;
+

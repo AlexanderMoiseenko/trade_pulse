@@ -3,6 +3,7 @@ import userReducer, {
   hydrateUser,
   completeOnboarding,
   updateBalance,
+  setLanguage,
   resetUser,
   UserState,
 } from '../src/store/userSlice';
@@ -17,6 +18,7 @@ const initialState: UserState = {
   isRegistered: false,
   balance: 10000,
   currentStep: ONBOARDING_STEPS.NAME_AGE,
+  language: 'en',
 };
 
 describe('userSlice reducers', () => {
@@ -43,6 +45,7 @@ describe('userSlice reducers', () => {
       isRegistered: true,
       balance: 15000,
       currentStep: ONBOARDING_STEPS.SOURCE,
+      language: 'en',
     };
 
     const nextState = userReducer(initialState, hydrateUser(persistedState));
@@ -62,6 +65,11 @@ describe('userSlice reducers', () => {
     expect(nextStateNegative.balance).toBe(10300);
   });
 
+  test('should handle setLanguage', () => {
+    const nextState = userReducer(initialState, setLanguage('uk'));
+    expect(nextState.language).toBe('uk');
+  });
+
   test('should handle resetUser', () => {
     const modifiedState: UserState = {
       name: 'Alex',
@@ -72,9 +80,11 @@ describe('userSlice reducers', () => {
       isRegistered: true,
       balance: 20000,
       currentStep: ONBOARDING_STEPS.SOURCE,
+      language: 'uk',
     };
 
     const nextState = userReducer(modifiedState, resetUser());
     expect(nextState).toEqual(initialState);
   });
 });
+

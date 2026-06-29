@@ -16,6 +16,7 @@ import {
 } from '../../store/userSlice';
 import { isIOS } from '../../helpers/utils';
 import { colors, spacing, borderRadius } from '../../theme';
+import { t } from '../../helpers/i18n';
 import { ProgressBar } from '../../components/ui/ProgressBar';
 
 export const SourceScreen = () => {
@@ -39,20 +40,22 @@ export const SourceScreen = () => {
         <View>
           <ProgressBar currentStep={4} totalSteps={4} />
 
-          <Text style={styles.step}>Step 4 of 4 (Optional)</Text>
+          <Text style={styles.step}>
+            {t.onboarding.step} 4 {t.onboarding.of} 4 ({t.onboarding.optional})
+          </Text>
           <Text style={styles.title}>
-            Where did you hear about Trade Pulse?
+            {t.onboarding.sourceTitle}
           </Text>
           <TextInput
             style={styles.input}
-            placeholder="For example: GitHub, Google, LinkedIn, Reddit, Twitter, from friends..."
+            placeholder={t.onboarding.sourcePlaceholder}
             placeholderTextColor={colors.text.placeholder}
             onChangeText={formik.handleChange('source')}
             value={formik.values.source}
           />
         </View>
         <TouchableOpacity style={styles.button} onPress={formik.handleSubmit}>
-          <Text style={styles.buttonText}>Start Trading</Text>
+          <Text style={styles.buttonText}>{t.onboarding.startTrading}</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
