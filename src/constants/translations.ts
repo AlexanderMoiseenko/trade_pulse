@@ -21,7 +21,7 @@ export const translations = {
       yupAgeNumber: 'Age must be a number',
     },
     feed: {
-      welcome: 'Welcome back,',
+      welcome: 'Welcome,',
       trader: 'Trader',
       balanceLabel: 'DEMO BALANCE',
       markets: 'Markets',
@@ -79,7 +79,7 @@ export const translations = {
       yupAgeNumber: 'Вік має бути числом',
     },
     feed: {
-      welcome: 'З поверненням,',
+      welcome: 'Вітаємо,',
       trader: 'Трейдер',
       balanceLabel: 'ДЕМО БАЛАНС',
       markets: 'Ринки',

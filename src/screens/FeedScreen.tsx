@@ -27,9 +27,7 @@ export const FeedScreen = () => {
   // Subscribe to language state to trigger instant, smooth local re-renders
   useAppSelector(state => state.user.language);
 
-  const { data, isLoading, isError, refetch } = useGetMarketDataQuery(undefined, {
-    pollingInterval: 5000,
-  });
+  const { data, isLoading, isError, refetch } = useGetMarketDataQuery();
 
   const formatPrice = (priceStr: string) => {
     const price = parseFloat(priceStr);
