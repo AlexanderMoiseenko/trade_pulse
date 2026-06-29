@@ -13,6 +13,7 @@ export interface UserState {
   balance: number;
   currentStep: OnboardingStep;
   language: 'en' | 'uk';
+  isOffline: boolean;
 }
 
 const initialState: UserState = {
@@ -25,6 +26,7 @@ const initialState: UserState = {
   balance: 10000,
   currentStep: ONBOARDING_STEPS.NAME_AGE,
   language: getDeviceLanguage(),
+  isOffline: false,
 };
 
 export const userSlice = createSlice({
@@ -44,7 +46,7 @@ export const userSlice = createSlice({
       } catch (e) {
         console.error('[userSlice] Failed to sync language in hydration:', e);
       }
-      return { ...state, ...action.payload, language };
+      return { ...state, ...action.payload, language, isOffline: false };
     },
     completeOnboarding: state => {
       state.isRegistered = true;
@@ -60,6 +62,9 @@ export const userSlice = createSlice({
         console.error('[userSlice] Failed to sync language in setLanguage:', e);
       }
     },
+    setOfflineMode: (state, action: PayloadAction<boolean>) => {
+      state.isOffline = action.payload;
+    },
     resetUser: () => initialState,
   },
 });
@@ -70,6 +75,7 @@ export const {
   completeOnboarding,
   updateBalance,
   setLanguage,
+  setOfflineMode,
   resetUser,
 } = userSlice.actions;
 export default userSlice.reducer;

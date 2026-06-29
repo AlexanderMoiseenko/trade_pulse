@@ -4,6 +4,7 @@ import userReducer, {
   completeOnboarding,
   updateBalance,
   setLanguage,
+  setOfflineMode,
   resetUser,
   UserState,
 } from '../src/store/userSlice';
@@ -19,6 +20,7 @@ const initialState: UserState = {
   balance: 10000,
   currentStep: ONBOARDING_STEPS.NAME_AGE,
   language: 'en',
+  isOffline: false,
 };
 
 describe('userSlice reducers', () => {
@@ -46,6 +48,7 @@ describe('userSlice reducers', () => {
       balance: 15000,
       currentStep: ONBOARDING_STEPS.SOURCE,
       language: 'en',
+      isOffline: false,
     };
 
     const nextState = userReducer(initialState, hydrateUser(persistedState));
@@ -70,6 +73,11 @@ describe('userSlice reducers', () => {
     expect(nextState.language).toBe('uk');
   });
 
+  test('should handle setOfflineMode', () => {
+    const nextState = userReducer(initialState, setOfflineMode(true));
+    expect(nextState.isOffline).toBe(true);
+  });
+
   test('should handle resetUser', () => {
     const modifiedState: UserState = {
       name: 'Alex',
@@ -81,6 +89,7 @@ describe('userSlice reducers', () => {
       balance: 20000,
       currentStep: ONBOARDING_STEPS.SOURCE,
       language: 'uk',
+      isOffline: false,
     };
 
     const nextState = userReducer(modifiedState, resetUser());

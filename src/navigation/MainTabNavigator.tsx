@@ -8,6 +8,7 @@ import { PortfolioScreen } from '../screens/PortfolioScreen';
 import { ProfileScreen } from '../screens/ProfileScreen';
 import { colors, spacing, borderRadius } from '../theme';
 import { t } from '../helpers/i18n';
+import { OfflineToast } from '../components/ui/OfflineToast';
 
 type Tab = 'markets' | 'portfolio' | 'profile';
 
@@ -97,6 +98,7 @@ export const MainTabNavigator = () => {
 
   return (
     <View style={styles.container}>
+      <OfflineToast />
       {/* Content Area */}
       <View style={styles.contentArea}>
         {renderActiveScreen()}

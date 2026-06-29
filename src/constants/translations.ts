@@ -30,6 +30,8 @@ export const translations = {
       failed: 'Failed to load rates',
       retry: 'Retry',
       reset: 'Reset Onboarding State',
+      offlineToast: 'No internet connection. Displaying cached data.',
+      onlineToast: 'Connection restored. Updating market rates.',
     },
     errorBoundary: {
       title: 'Something went wrong',
@@ -88,6 +90,8 @@ export const translations = {
       failed: 'Не вдалося завантажити котирування',
       retry: 'Повторити',
       reset: 'Скинути стан онбордингу',
+      offlineToast: 'Мережа відсутня. Показуємо збережені дані.',
+      onlineToast: 'Зв’язок відновлено. Оновлюємо котирування.',
     },
     errorBoundary: {
       title: 'Щось пішло не так',

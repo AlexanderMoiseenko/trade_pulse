@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { EaseView } from 'react-native-ease';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { resetUser, setLanguage } from '../store/userSlice';
 import { selectUserName, selectUserAge, selectUserBalance } from '../store/selectors/userSelectors';
@@ -22,11 +23,6 @@ export const ProfileScreen = () => {
 
   // Get language directly from Redux to guarantee reactive lockstep sync
   const currentLang = useAppSelector(state => state.user.language) || 'en';
-
-  const handleLanguageToggle = () => {
-    const nextLang = currentLang === 'en' ? 'uk' : 'en';
-    dispatch(setLanguage(nextLang));
-  };
 
   const handleReset = () => {
     dispatch(resetUser());
@@ -81,11 +77,48 @@ export const ProfileScreen = () => {
           {/* Language Switch */}
           <View style={styles.settingsRow}>
             <Text style={styles.settingsLabel}>{t.profile.language}</Text>
-            <TouchableOpacity style={styles.langButton} onPress={handleLanguageToggle}>
-              <Text style={styles.langButtonText}>
-                {currentLang === 'en' ? 'UA' : 'EN'}
-              </Text>
-            </TouchableOpacity>
+            <View style={styles.segmentedContainer}>
+              {/* Sliding Active Capsule */}
+              <EaseView
+                animate={{
+                  translateX: currentLang === 'en' ? 0 : 50,
+                }}
+                transition={{ type: 'spring', damping: 18, stiffness: 220 }}
+                style={styles.segmentedHighlight}
+              />
+              
+              {/* EN Option */}
+              <TouchableOpacity
+                style={styles.segmentedButton}
+                onPress={() => dispatch(setLanguage('en'))}
+                activeOpacity={0.7}
+              >
+                <Text
+                  style={[
+                    styles.segmentedText,
+                    currentLang === 'en' && styles.segmentedTextActive,
+                  ]}
+                >
+                  EN
+                </Text>
+              </TouchableOpacity>
+
+              {/* UA Option */}
+              <TouchableOpacity
+                style={styles.segmentedButton}
+                onPress={() => dispatch(setLanguage('uk'))}
+                activeOpacity={0.7}
+              >
+                <Text
+                  style={[
+                    styles.segmentedText,
+                    currentLang === 'uk' && styles.segmentedTextActive,
+                  ]}
+                >
+                  UA
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
           {/* Onboarding Reset */}
@@ -216,16 +249,39 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: colors.text.primary,
   },
-  langButton: {
+  segmentedContainer: {
+    width: 104,
+    height: 32,
+    borderRadius: 16,
     backgroundColor: colors.bg.elevated,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: borderRadius.sm,
+    flexDirection: 'row',
+    padding: 2,
+    position: 'relative',
+    overflow: 'hidden',
   },
-  langButtonText: {
+  segmentedHighlight: {
+    width: 50,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: colors.accent.green,
+    position: 'absolute',
+    top: 2,
+    left: 2,
+  },
+  segmentedButton: {
+    width: 50,
+    height: 28,
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 2,
+  },
+  segmentedText: {
     fontSize: 12,
     fontWeight: '700',
-    color: colors.text.primary,
+    color: colors.text.secondary,
+  },
+  segmentedTextActive: {
+    color: colors.text.dark,
   },
   resetButton: {
     padding: spacing.lg,
