@@ -36,6 +36,26 @@ export const translations = {
       message: 'Something went wrong in the app.',
       retry: 'Try again',
     },
+    tabs: {
+      markets: 'Markets',
+      portfolio: 'Portfolio',
+      profile: 'Profile',
+    },
+    profile: {
+      title: 'Profile',
+      profession: 'Profession',
+      age: 'Age',
+      interests: 'Interests',
+      source: 'Source',
+      yearsOld: 'years old',
+      settings: 'Settings',
+      language: 'Language',
+    },
+    portfolio: {
+      title: 'Portfolio',
+      totalValue: 'Total Value',
+      allocation: 'Asset Allocation',
+    },
   },
   uk: {
     onboarding: {
@@ -73,6 +93,26 @@ export const translations = {
       title: 'Щось пішло не так',
       message: 'Сталася невідома помилка в додатку.',
       retry: 'Спробувати знову',
+    },
+    tabs: {
+      markets: 'Ринки',
+      portfolio: 'Портфоліо',
+      profile: 'Профіль',
+    },
+    profile: {
+      title: 'Профіль',
+      profession: 'Професія',
+      age: 'Вік',
+      interests: 'Інтереси',
+      source: 'Джерело',
+      yearsOld: 'р.',
+      settings: 'Налаштування',
+      language: 'Мова',
+    },
+    portfolio: {
+      title: 'Портфоліо',
+      totalValue: 'Загальна вартість',
+      allocation: 'Розподіл активів',
     },
   },
 } as const;

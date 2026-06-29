@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAppSelector } from '../store/hooks';
 import { selectIsRegistered } from '../store/selectors/userSelectors';
 import { OnboardingNavigator } from './OnboardingNavigator';
-import { FeedScreen } from '../screens/FeedScreen';
+import { MainTabNavigator } from './MainTabNavigator';
 import { colors } from '../theme';
 
 export type RootStackParamList = {
@@ -37,7 +37,7 @@ export const AppNavigator = () => {
         {!isRegistered ? (
           <Stack.Screen name="OnboardingFlow" component={OnboardingNavigator} />
         ) : (
-          <Stack.Screen name="Feed" component={FeedScreen} />
+          <Stack.Screen name="Feed" component={MainTabNavigator} />
         )}
       </Stack.Navigator>
     </NavigationContainer>

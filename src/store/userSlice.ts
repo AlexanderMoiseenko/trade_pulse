@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ONBOARDING_STEPS, type OnboardingStep } from '../constants/onboarding';
+import { storage } from '../storage';
+import { getDeviceLanguage } from '../helpers/i18n';
 
 export interface UserState {
   name: string;
@@ -22,7 +24,7 @@ const initialState: UserState = {
   isRegistered: false,
   balance: 10000,
   currentStep: ONBOARDING_STEPS.NAME_AGE,
-  language: 'en',
+  language: getDeviceLanguage(),
 };
 
 export const userSlice = createSlice({
@@ -36,7 +38,13 @@ export const userSlice = createSlice({
       return { ...state, ...action.payload };
     },
     hydrateUser: (state, action: PayloadAction<UserState>) => {
-      return { ...state, ...action.payload };
+      const language = action.payload.language || getDeviceLanguage();
+      try {
+        storage.set('user_language', language);
+      } catch (e) {
+        console.error('[userSlice] Failed to sync language in hydration:', e);
+      }
+      return { ...state, ...action.payload, language };
     },
     completeOnboarding: state => {
       state.isRegistered = true;
@@ -46,6 +54,11 @@ export const userSlice = createSlice({
     },
     setLanguage: (state, action: PayloadAction<'en' | 'uk'>) => {
       state.language = action.payload;
+      try {
+        storage.set('user_language', action.payload);
+      } catch (e) {
+        console.error('[userSlice] Failed to sync language in setLanguage:', e);
+      }
     },
     resetUser: () => initialState,
   },

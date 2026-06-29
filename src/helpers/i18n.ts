@@ -3,7 +3,7 @@ import { translations, type TranslationKeys } from '../constants/translations';
 import { storage } from '../storage';
 import { isIOS, isAndroid } from './utils';
 
-const getDeviceLanguage = (): 'en' | 'uk' => {
+export const getDeviceLanguage = (): 'en' | 'uk' => {
   try {
     // 1. Check if user has a saved language in MMKV first
     const savedLang = storage.getString('user_language');

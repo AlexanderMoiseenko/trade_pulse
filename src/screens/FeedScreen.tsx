@@ -1,17 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import { EaseView } from 'react-native-ease';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { resetUser, setLanguage } from '../store/userSlice';
+import { useAppSelector } from '../store/hooks';
 import { selectUserName, selectUserBalance } from '../store/selectors/userSelectors';
 import { colors, spacing, borderRadius } from '../theme';
 import { useGetMarketDataQuery, ASSET_NAMES } from '../store/services/marketApi';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { t, changeLanguage, getCurrentLanguage } from '../helpers/i18n';
+import { t } from '../helpers/i18n';
 import { Sparkbar } from '../components/ui/Sparkbar';
 
 export const FeedScreen = () => {
-  const dispatch = useAppDispatch();
   const name = useAppSelector(selectUserName);
   const balance = useAppSelector(selectUserBalance);
   const insets = useSafeAreaInsets();
@@ -28,15 +26,10 @@ export const FeedScreen = () => {
 
   // Subscribe to language state to trigger instant, smooth local re-renders
   useAppSelector(state => state.user.language);
-  const currentLang = getCurrentLanguage();
 
   const { data, isLoading, isError, refetch } = useGetMarketDataQuery(undefined, {
     pollingInterval: 5000,
   });
-
-  const handleReset = () => {
-    dispatch(resetUser());
-  };
 
   const formatPrice = (priceStr: string) => {
     const price = parseFloat(priceStr);
@@ -52,7 +45,7 @@ export const FeedScreen = () => {
   };
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top + spacing.lg, paddingBottom: insets.bottom + spacing.md }]}>
+    <View style={[styles.container, { paddingTop: insets.top + spacing.lg, paddingBottom: spacing.lg }]}>
       {/* Header */}
       <View style={styles.header}>
         <View>
@@ -142,26 +135,6 @@ export const FeedScreen = () => {
           </View>
         )}
       </ScrollView>
-
-      {/* Footer buttons */}
-      <View style={styles.footerContainer}>
-        <TouchableOpacity
-          style={styles.langButton}
-          onPress={() => {
-            const nextLang = currentLang === 'en' ? 'uk' : 'en';
-            changeLanguage(nextLang);
-            dispatch(setLanguage(nextLang));
-          }}
-        >
-          <Text style={styles.footerLinkText}>
-            {currentLang === 'en' ? 'UA' : 'EN'}
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
-          <Text style={styles.resetButtonText}>{t.feed.reset}</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 };
