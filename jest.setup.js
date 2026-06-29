@@ -15,3 +15,13 @@ jest.mock('react-native-mmkv', () => {
     }),
   };
 });
+
+jest.mock('react-native-ease', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+  return {
+    EaseView: jest.fn().mockImplementation(({ children, ...props }) => {
+      return React.createElement(View, props, children);
+    }),
+  };
+});

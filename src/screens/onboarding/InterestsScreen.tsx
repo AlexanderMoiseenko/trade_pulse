@@ -17,6 +17,7 @@ import { ONBOARDING_STEPS, INTEREST_TAGS } from '../../constants/onboarding';
 import { colors, spacing, borderRadius } from '../../theme';
 import { t } from '../../helpers/i18n';
 import { ProgressBar } from '../../components/ui/ProgressBar';
+import { AnimatedButton } from '../../components/ui/AnimatedButton';
 
 type InterestsScreenNavProp = NativeStackNavigationProp<
   OnboardingStackParamList,
@@ -165,13 +166,11 @@ export const InterestsScreen = ({ navigation }: Props) => {
         </View>
       </View>
 
-      <TouchableOpacity
-        style={[styles.button, selected.length === 0 && styles.disabledButton]}
+      <AnimatedButton
+        title={t.onboarding.next}
         onPress={handleNext}
         disabled={selected.length === 0}
-      >
-        <Text style={styles.buttonText}>{t.onboarding.next}</Text>
-      </TouchableOpacity>
+      />
     </View>
   );
 };
@@ -244,14 +243,4 @@ const styles = StyleSheet.create({
   selectedCardText: {
     color: colors.accent.green,
   },
-  button: {
-    backgroundColor: colors.accent.green,
-    borderRadius: borderRadius.md,
-    padding: spacing.lg,
-    alignItems: 'center',
-  },
-  disabledButton: {
-    opacity: 0.5,
-  },
-  buttonText: { color: colors.text.dark, fontWeight: '700', fontSize: 16 },
 });

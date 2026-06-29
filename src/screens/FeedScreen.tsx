@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
+import { EaseView } from 'react-native-ease';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { resetUser, setLanguage } from '../store/userSlice';
 import { selectUserName, selectUserBalance } from '../store/selectors/userSelectors';
@@ -7,6 +8,7 @@ import { colors, spacing, borderRadius } from '../theme';
 import { useGetMarketDataQuery, ASSET_NAMES } from '../store/services/marketApi';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { t, changeLanguage, getCurrentLanguage } from '../helpers/i18n';
+import { Sparkbar } from '../components/ui/Sparkbar';
 
 export const FeedScreen = () => {
   const dispatch = useAppDispatch();
@@ -14,6 +16,16 @@ export const FeedScreen = () => {
   const balance = useAppSelector(selectUserBalance);
   const insets = useSafeAreaInsets();
   
+  // Local state to toggle pulse animation with react-native-ease
+  const [pulse, setPulse] = useState(true);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setPulse(prev => !prev);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   // Subscribe to language state to trigger instant, smooth local re-renders
   useAppSelector(state => state.user.language);
   const currentLang = getCurrentLanguage();
@@ -59,7 +71,11 @@ export const FeedScreen = () => {
       <View style={styles.marketsHeader}>
         <Text style={styles.sectionTitle}>{t.feed.markets}</Text>
         <View style={styles.liveIndicatorContainer}>
-          <View style={styles.liveDot} />
+          <EaseView
+            animate={{ opacity: pulse ? 1 : 0.3 }}
+            transition={{ type: 'timing', duration: 1000 }}
+            style={styles.liveDot}
+          />
           <Text style={styles.liveText}>{t.feed.live}</Text>
         </View>
       </View>
@@ -90,10 +106,18 @@ export const FeedScreen = () => {
 
               return (
                 <View key={item.symbol} style={styles.card}>
-                  <View>
-                    <Text style={styles.cardSymbol}>{item.symbol.replace('USDT', '')} / USDT</Text>
+                  <View style={styles.cardLeft}>
+                    <Text style={styles.cardSymbol}>
+                      {item.symbol.replace('USDT', '')}
+                      <Text style={styles.cardSymbolSub}> / USDT</Text>
+                    </Text>
                     <Text style={styles.cardName}>{name}</Text>
                   </View>
+
+                  <View style={styles.cardCenter} pointerEvents="none">
+                    <Sparkbar symbol={item.symbol} isPositive={isPositive} />
+                  </View>
+
                   <View style={styles.cardRight}>
                     <Text style={styles.cardPrice}>{formatPrice(item.lastPrice)}</Text>
                     <View
@@ -259,18 +283,38 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.bg.elevated,
   },
+  cardLeft: {
+    flex: 1,
+    paddingRight: 35,
+  },
   cardSymbol: {
     fontSize: 16,
     fontWeight: '700',
     color: colors.text.primary,
+  },
+  cardSymbolSub: {
+    fontSize: 11,
+    color: colors.text.secondary,
+    fontWeight: '500',
   },
   cardName: {
     fontSize: 12,
     color: colors.text.secondary,
     marginTop: 2,
   },
+  cardCenter: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   cardRight: {
+    flex: 1,
     alignItems: 'flex-end',
+    paddingLeft: 35,
   },
   cardPrice: {
     fontSize: 16,

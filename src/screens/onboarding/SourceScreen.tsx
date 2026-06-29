@@ -18,6 +18,7 @@ import { isIOS } from '../../helpers/utils';
 import { colors, spacing, borderRadius } from '../../theme';
 import { t } from '../../helpers/i18n';
 import { ProgressBar } from '../../components/ui/ProgressBar';
+import { AnimatedButton } from '../../components/ui/AnimatedButton';
 
 export const SourceScreen = () => {
   const dispatch = useAppDispatch();
@@ -57,9 +58,10 @@ export const SourceScreen = () => {
             value={formik.values.source}
           />
         </View>
-        <TouchableOpacity style={styles.button} onPress={formik.handleSubmit}>
-          <Text style={styles.buttonText}>{t.onboarding.startTrading}</Text>
-        </TouchableOpacity>
+        <AnimatedButton
+          title={t.onboarding.startTrading}
+          onPress={formik.handleSubmit}
+        />
       </View>
     </KeyboardAvoidingView>
   );
@@ -90,13 +92,6 @@ const styles = StyleSheet.create({
     padding: spacing.lg,
     fontSize: 16,
   },
-  button: {
-    backgroundColor: colors.accent.green,
-    borderRadius: borderRadius.md,
-    padding: spacing.lg,
-    alignItems: 'center',
-  },
-  buttonText: { color: colors.text.dark, fontWeight: '700', fontSize: 16 },
   inner: {
     flex: 1,
     justifyContent: 'space-between',

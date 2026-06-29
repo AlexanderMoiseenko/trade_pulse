@@ -24,6 +24,7 @@ import { colors, spacing, borderRadius } from '../../theme';
 import { t } from '../../helpers/i18n';
 
 import { ProgressBar } from '../../components/ui/ProgressBar';
+import { AnimatedButton } from '../../components/ui/AnimatedButton';
 
 type NameAgeScreenNavProp = NativeStackNavigationProp<
   OnboardingStackParamList,
@@ -127,12 +128,10 @@ export const NameAgeScreen = ({ navigation }: Props) => {
           </View>
         </View>
 
-        <TouchableOpacity
-          style={styles.button}
+        <AnimatedButton
+          title={t.onboarding.next}
           onPress={() => formik.handleSubmit()}
-        >
-          <Text style={styles.buttonText}>{t.onboarding.next}</Text>
-        </TouchableOpacity>
+        />
       </View>
     </KeyboardAvoidingView>
   );
@@ -186,11 +185,4 @@ const styles = StyleSheet.create({
     color: colors.accent.red,
     fontSize: 12,
   },
-  button: {
-    backgroundColor: colors.accent.green,
-    borderRadius: borderRadius.md,
-    padding: spacing.lg,
-    alignItems: 'center',
-  },
-  buttonText: { color: colors.text.dark, fontWeight: '700', fontSize: 16 },
 });

@@ -11,6 +11,7 @@ import { colors, spacing, borderRadius } from '../../theme';
 import { t } from '../../helpers/i18n';
 
 import { ProgressBar } from '../../components/ui/ProgressBar';
+import { AnimatedButton } from '../../components/ui/AnimatedButton';
 
 type ProfessionScreenNavProp = NativeStackNavigationProp<
   OnboardingStackParamList,
@@ -83,13 +84,11 @@ export const ProfessionScreen = ({ navigation }: Props) => {
           />
         </View>
 
-        <TouchableOpacity
-          style={[styles.button, !selected && styles.disabledButton]}
+        <AnimatedButton
+          title={t.onboarding.next}
           onPress={handleNext}
           disabled={!selected}
-        >
-          <Text style={styles.buttonText}>{t.onboarding.next}</Text>
-        </TouchableOpacity>
+        />
       </View>
     </View>
   );
@@ -136,14 +135,4 @@ const styles = StyleSheet.create({
   },
   cardText: { color: colors.text.primary, fontSize: 16, fontWeight: '500' },
   selectedCardText: { color: colors.accent.green },
-  button: {
-    backgroundColor: colors.accent.green,
-    borderRadius: borderRadius.md,
-    padding: spacing.lg,
-    alignItems: 'center',
-  },
-  disabledButton: {
-    opacity: 0.5,
-  },
-  buttonText: { color: colors.text.dark, fontWeight: '700', fontSize: 16 },
 });
