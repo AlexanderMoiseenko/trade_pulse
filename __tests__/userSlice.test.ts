@@ -5,6 +5,7 @@ import userReducer, {
   updateBalance,
   setLanguage,
   setOfflineMode,
+  setBiometricsEnabled,
   resetUser,
   UserState,
 } from '../src/store/userSlice';
@@ -21,6 +22,7 @@ const initialState: UserState = {
   currentStep: ONBOARDING_STEPS.NAME_AGE,
   language: 'en',
   isOffline: false,
+  isBiometricsEnabled: false,
 };
 
 describe('userSlice reducers', () => {
@@ -49,6 +51,7 @@ describe('userSlice reducers', () => {
       currentStep: ONBOARDING_STEPS.SOURCE,
       language: 'en',
       isOffline: false,
+      isBiometricsEnabled: false,
     };
 
     const nextState = userReducer(initialState, hydrateUser(persistedState));
@@ -78,6 +81,11 @@ describe('userSlice reducers', () => {
     expect(nextState.isOffline).toBe(true);
   });
 
+  test('should handle setBiometricsEnabled', () => {
+    const nextState = userReducer(initialState, setBiometricsEnabled(true));
+    expect(nextState.isBiometricsEnabled).toBe(true);
+  });
+
   test('should handle resetUser', () => {
     const modifiedState: UserState = {
       name: 'Alex',
@@ -90,6 +98,7 @@ describe('userSlice reducers', () => {
       currentStep: ONBOARDING_STEPS.SOURCE,
       language: 'uk',
       isOffline: false,
+      isBiometricsEnabled: false,
     };
 
     const nextState = userReducer(modifiedState, resetUser());

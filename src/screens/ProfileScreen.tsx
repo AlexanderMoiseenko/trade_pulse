@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Alert } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { EaseView } from 'react-native-ease';
+import ReactNativeBiometrics from 'react-native-biometrics';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { resetUser, setLanguage } from '../store/userSlice';
+import { resetUser, setLanguage, setBiometricsEnabled } from '../store/userSlice';
 import { selectUserName, selectUserAge, selectUserBalance } from '../store/selectors/userSelectors';
 import { colors, spacing, borderRadius } from '../theme';
 import { t } from '../helpers/i18n';
@@ -23,6 +24,36 @@ export const ProfileScreen = () => {
 
   // Get language directly from Redux to guarantee reactive lockstep sync
   const currentLang = useAppSelector(state => state.user.language) || 'en';
+  const isBiometricsEnabled = useAppSelector(state => state.user.isBiometricsEnabled) || false;
+
+  const handleBiometricsToggle = async (targetValue: boolean) => {
+    if (targetValue === isBiometricsEnabled) return;
+
+    if (targetValue) {
+      try {
+        const rnBiometrics = new ReactNativeBiometrics();
+        const { available } = await rnBiometrics.isSensorAvailable();
+
+        if (!available) {
+          Alert.alert(t.profile.biometricsError, t.profile.biometricsError);
+          return;
+        }
+
+        const { success } = await rnBiometrics.simplePrompt({
+          promptMessage: t.profile.biometricsTestPrompt,
+        });
+
+        if (success) {
+          dispatch(setBiometricsEnabled(true));
+        }
+      } catch (err) {
+        console.error('[ProfileScreen] Biometrics error:', err);
+        Alert.alert(t.profile.biometricsError, t.profile.biometricsError);
+      }
+    } else {
+      dispatch(setBiometricsEnabled(false));
+    }
+  };
 
   const handleReset = () => {
     dispatch(resetUser());
@@ -116,6 +147,53 @@ export const ProfileScreen = () => {
                   ]}
                 >
                   UA
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* Biometrics Switch */}
+          <View style={styles.settingsRow}>
+            <Text style={styles.settingsLabel}>{t.profile.biometricsLabel}</Text>
+            <View style={styles.segmentedContainer}>
+              {/* Sliding Active Capsule */}
+              <EaseView
+                animate={{
+                  translateX: !isBiometricsEnabled ? 0 : 50,
+                }}
+                transition={{ type: 'spring', damping: 18, stiffness: 220 }}
+                style={styles.segmentedHighlight}
+              />
+              
+              {/* OFF Option */}
+              <TouchableOpacity
+                style={styles.segmentedButton}
+                onPress={() => handleBiometricsToggle(false)}
+                activeOpacity={0.7}
+              >
+                <Text
+                  style={[
+                    styles.segmentedText,
+                    !isBiometricsEnabled && styles.segmentedTextActive,
+                  ]}
+                >
+                  OFF
+                </Text>
+              </TouchableOpacity>
+
+              {/* ON Option */}
+              <TouchableOpacity
+                style={styles.segmentedButton}
+                onPress={() => handleBiometricsToggle(true)}
+                activeOpacity={0.7}
+              >
+                <Text
+                  style={[
+                    styles.segmentedText,
+                    isBiometricsEnabled && styles.segmentedTextActive,
+                  ]}
+                >
+                  ON
                 </Text>
               </TouchableOpacity>
             </View>

@@ -14,6 +14,7 @@ export interface UserState {
   currentStep: OnboardingStep;
   language: 'en' | 'uk';
   isOffline: boolean;
+  isBiometricsEnabled: boolean;
 }
 
 const initialState: UserState = {
@@ -27,6 +28,7 @@ const initialState: UserState = {
   currentStep: ONBOARDING_STEPS.NAME_AGE,
   language: getDeviceLanguage(),
   isOffline: false,
+  isBiometricsEnabled: false,
 };
 
 export const userSlice = createSlice({
@@ -46,7 +48,13 @@ export const userSlice = createSlice({
       } catch (e) {
         console.error('[userSlice] Failed to sync language in hydration:', e);
       }
-      return { ...state, ...action.payload, language, isOffline: false };
+      return {
+        ...state,
+        ...action.payload,
+        language,
+        isOffline: false,
+        isBiometricsEnabled: action.payload.isBiometricsEnabled || false,
+      };
     },
     completeOnboarding: state => {
       state.isRegistered = true;
@@ -65,6 +73,9 @@ export const userSlice = createSlice({
     setOfflineMode: (state, action: PayloadAction<boolean>) => {
       state.isOffline = action.payload;
     },
+    setBiometricsEnabled: (state, action: PayloadAction<boolean>) => {
+      state.isBiometricsEnabled = action.payload;
+    },
     resetUser: () => initialState,
   },
 });
@@ -76,6 +87,7 @@ export const {
   updateBalance,
   setLanguage,
   setOfflineMode,
+  setBiometricsEnabled,
   resetUser,
 } = userSlice.actions;
 export default userSlice.reducer;

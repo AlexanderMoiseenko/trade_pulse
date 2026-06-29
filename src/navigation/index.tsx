@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAppSelector } from '../store/hooks';
 import { selectIsRegistered } from '../store/selectors/userSelectors';
 import { OnboardingNavigator } from './OnboardingNavigator';
 import { MainTabNavigator } from './MainTabNavigator';
+import { BiometricGateScreen } from '../screens/BiometricGateScreen';
 import { colors } from '../theme';
 
 export type RootStackParamList = {
@@ -24,6 +25,13 @@ const TradePulseTheme = {
 
 export const AppNavigator = () => {
   const isRegistered = useAppSelector(selectIsRegistered);
+  const isBiometricsEnabled = useAppSelector((state) => state.user.isBiometricsEnabled);
+  const [isUnlocked, setIsUnlocked] = useState(false);
+
+  // Gated entry: if user is registered and biometrics is active, block dashboard until FaceID scan passes
+  if (isRegistered && isBiometricsEnabled && !isUnlocked) {
+    return <BiometricGateScreen onUnlock={() => setIsUnlocked(true)} />;
+  }
 
   return (
     <NavigationContainer theme={TradePulseTheme}>

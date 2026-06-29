@@ -52,6 +52,11 @@ export const translations = {
       yearsOld: 'years old',
       settings: 'Settings',
       language: 'Language',
+      biometricsLabel: 'Biometric Login',
+      biometricsPrompt: 'Confirm face or fingerprint to unlock',
+      biometricsError: 'Authentication failed',
+      biometricsTestPrompt: 'Confirm biometrics to enable login',
+      biometricsLockout: 'Biometrics locked. Please enter device passcode or restart.',
     },
     portfolio: {
       title: 'Portfolio',
@@ -112,6 +117,11 @@ export const translations = {
       yearsOld: 'р.',
       settings: 'Налаштування',
       language: 'Мова',
+      biometricsLabel: 'Біометричний вхід',
+      biometricsPrompt: 'Підтвердіть особу для входу в додаток',
+      biometricsError: 'Не вдалося підтвердити особу',
+      biometricsTestPrompt: 'Підтвердіть особу для активації входу',
+      biometricsLockout: 'Біометрію тимчасово заблоковано. Скористайтеся паролем пристрою.',
     },
     portfolio: {
       title: 'Портфоліо',

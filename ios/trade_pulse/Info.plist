@@ -54,6 +54,8 @@
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
+	<key>NSFaceIDUsageDescription</key>
+	<string>TradePulse requires FaceID access for quick and secure biometric login.</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>
