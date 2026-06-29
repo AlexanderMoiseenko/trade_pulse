@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { ActivityIndicator, StyleSheet, View, StatusBar } from 'react-native';
+import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import { store, hydrateStore } from './src/store';
 import { AppNavigator } from './src/navigation';
 import { colors } from './src/theme';
@@ -24,19 +25,21 @@ function App(): React.JSX.Element {
 
   return (
     <Provider store={store}>
-      <StatusBar barStyle="light-content" backgroundColor={colors.bg.primary} />
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+        <StatusBar barStyle="light-content" backgroundColor={colors.bg.primary} />
 
-      <View style={styles.rootWrapper}>
-        {!isHydrated ? (
-          <View style={styles.splash}>
-            <ActivityIndicator size="large" color={colors.accent.green} />
-          </View>
-        ) : (
-          <ErrorBoundary>
-            <AppNavigator />
-          </ErrorBoundary>
-        )}
-      </View>
+        <View style={styles.rootWrapper}>
+          {!isHydrated ? (
+            <View style={styles.splash}>
+              <ActivityIndicator size="large" color={colors.accent.green} />
+            </View>
+          ) : (
+            <ErrorBoundary>
+              <AppNavigator />
+            </ErrorBoundary>
+          )}
+        </View>
+      </SafeAreaProvider>
     </Provider>
   );
 }

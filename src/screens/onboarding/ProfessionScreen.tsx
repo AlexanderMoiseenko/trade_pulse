@@ -58,7 +58,15 @@ export const ProfessionScreen = ({ navigation }: Props) => {
   );
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top + spacing.lg }]}>
+    <View
+      style={[
+        styles.container,
+        {
+          paddingTop: insets.top + spacing.lg,
+          paddingBottom: Math.max(insets.bottom, spacing.xxl),
+        },
+      ]}
+    >
       <View style={styles.inner}>
         <View style={styles.listContainer}>
           <ProgressBar currentStep={2} totalSteps={4} />
@@ -75,7 +83,11 @@ export const ProfessionScreen = ({ navigation }: Props) => {
           />
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleNext}>
+        <TouchableOpacity
+          style={[styles.button, !selected && styles.disabledButton]}
+          onPress={handleNext}
+          disabled={!selected}
+        >
           <Text style={styles.buttonText}>{t.onboarding.next}</Text>
         </TouchableOpacity>
       </View>
@@ -87,7 +99,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.bg.primary,
-    padding: spacing.xxl,
+    paddingHorizontal: spacing.xxl,
     justifyContent: 'space-between',
   },
   inner: {
@@ -129,7 +141,9 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.md,
     padding: spacing.lg,
     alignItems: 'center',
-    marginBottom: spacing.layoutBottom,
+  },
+  disabledButton: {
+    opacity: 0.5,
   },
   buttonText: { color: colors.text.dark, fontWeight: '700', fontSize: 16 },
 });

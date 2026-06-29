@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { StyleSheet, View, Animated } from 'react-native';
+import { colors } from '../../theme';
 
 interface ProgressBarProps {
   /** Current step, starting from 1 */
@@ -41,7 +42,7 @@ export const ProgressBar = React.memo(
 const styles = StyleSheet.create({
   container: {
     height: 4,
-    backgroundColor: '#1C1C1E',
+    backgroundColor: colors.bg.secondary,
     borderRadius: 2,
     marginBottom: 32,
     width: '100%',
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
   },
   bar: {
     height: '100%',
-    backgroundColor: '#34C759', // accent green
+    backgroundColor: colors.accent.green,
     borderRadius: 2,
   },
 });

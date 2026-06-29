@@ -130,10 +130,9 @@ export const FeedScreen = () => {
           }}
         >
           <Text style={styles.footerLinkText}>
-            {currentLang === 'en' ? '🇺🇦 UA' : '🇬🇧 EN'}
+            {currentLang === 'en' ? 'UA' : 'EN'}
           </Text>
         </TouchableOpacity>
-
 
         <TouchableOpacity style={styles.resetButton} onPress={handleReset}>
           <Text style={styles.resetButtonText}>{t.feed.reset}</Text>
@@ -288,7 +287,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.state.selectedBg,
   },
   badgeNegative: {
-    backgroundColor: '#2A1E1E',
+    backgroundColor: colors.state.negativeBg,
   },
   percentText: {
     fontSize: 11,

@@ -17,5 +17,6 @@ export const colors = {
   },
   state: {
     selectedBg: '#1C2E24', // Background on selection (green tint)
+    negativeBg: '#2A1E1E', // Background on negative values (red tint)
   },
 } as const;

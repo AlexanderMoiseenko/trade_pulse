@@ -36,16 +36,19 @@ export const SourceScreen = () => {
       behavior={isIOS ? 'padding' : undefined}
       style={[styles.container, { paddingTop: insets.top + spacing.lg }]}
     >
-      <View style={styles.inner}>
+      <View
+        style={[
+          styles.inner,
+          { paddingBottom: Math.max(insets.bottom, spacing.xxl) },
+        ]}
+      >
         <View>
           <ProgressBar currentStep={4} totalSteps={4} />
 
           <Text style={styles.step}>
             {t.onboarding.step} 4 {t.onboarding.of} 4 ({t.onboarding.optional})
           </Text>
-          <Text style={styles.title}>
-            {t.onboarding.sourceTitle}
-          </Text>
+          <Text style={styles.title}>{t.onboarding.sourceTitle}</Text>
           <TextInput
             style={styles.input}
             placeholder={t.onboarding.sourcePlaceholder}
@@ -66,7 +69,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.bg.primary,
-    padding: spacing.xxl,
+    paddingHorizontal: spacing.xxl,
     justifyContent: 'space-between',
   },
   step: {
@@ -92,7 +95,6 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.md,
     padding: spacing.lg,
     alignItems: 'center',
-    marginBottom: spacing.layoutBottom,
   },
   buttonText: { color: colors.text.dark, fontWeight: '700', fontSize: 16 },
   inner: {

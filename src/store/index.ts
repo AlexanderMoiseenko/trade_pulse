@@ -18,18 +18,19 @@ export const store = configureStore({
 
 const debouncedSave = (() => {
   let timer: ReturnType<typeof setTimeout> | null = null;
-  return (state: ReturnType<typeof store.getState>) => {
+  return (stateToSave: { user: ReturnType<typeof store.getState>['user'] }) => {
     if (timer) {
       clearTimeout(timer);
     }
     timer = setTimeout(() => {
-      reduxStorage.setItem('root_state', JSON.stringify(state));
+      reduxStorage.setItem('root_state', JSON.stringify(stateToSave));
     }, 300);
   };
 })();
 
 store.subscribe(() => {
-  debouncedSave(store.getState());
+  const state = store.getState();
+  debouncedSave({ user: state.user });
 });
 
 export const hydrateStore = async () => {

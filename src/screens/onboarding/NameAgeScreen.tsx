@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useMemo } from 'react';
 import {
   StyleSheet,
   Text,
@@ -34,22 +34,25 @@ interface Props {
   navigation: NameAgeScreenNavProp;
 }
 
-const validationSchema = Yup.object().shape({
-  name: Yup.string()
-    .typeError(t.onboarding.yupNameRequired)
-    .min(3, t.onboarding.yupNameRequired)
-    .required(t.onboarding.yupNameRequired),
-  age: Yup.number()
-    .typeError(t.onboarding.yupAgeNumber)
-    .min(18, t.onboarding.yupAgeMin)
-    .required(t.onboarding.yupAgeRequired),
-});
-
 export const NameAgeScreen = ({ navigation }: Props) => {
   const dispatch = useAppDispatch();
   const userName = useAppSelector(selectUserName);
   const userAge = useAppSelector(selectUserAge);
+  const currentLanguage = useAppSelector(state => state.user.language);
   const insets = useSafeAreaInsets();
+
+  const validationSchema = useMemo(() => {
+    return Yup.object().shape({
+      name: Yup.string()
+        .typeError(t.onboarding.yupNameRequired)
+        .min(3, t.onboarding.yupNameRequired)
+        .required(t.onboarding.yupNameRequired),
+      age: Yup.number()
+        .typeError(t.onboarding.yupAgeNumber)
+        .min(18, t.onboarding.yupAgeMin)
+        .required(t.onboarding.yupAgeRequired),
+    });
+  }, [currentLanguage]);
 
   const formik = useFormik({
     initialValues: {
@@ -74,7 +77,12 @@ export const NameAgeScreen = ({ navigation }: Props) => {
       behavior={isIOS ? 'padding' : undefined}
       style={[styles.container, { paddingTop: insets.top + spacing.lg }]}
     >
-      <View style={styles.inner}>
+      <View
+        style={[
+          styles.inner,
+          { paddingBottom: Math.max(insets.bottom, spacing.xxl) },
+        ]}
+      >
         <View>
           <ProgressBar currentStep={1} totalSteps={4} />
 
@@ -119,7 +127,10 @@ export const NameAgeScreen = ({ navigation }: Props) => {
           </View>
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={() => formik.handleSubmit()}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => formik.handleSubmit()}
+        >
           <Text style={styles.buttonText}>{t.onboarding.next}</Text>
         </TouchableOpacity>
       </View>
@@ -131,7 +142,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.bg.primary,
-    padding: spacing.xxl,
+    paddingHorizontal: spacing.xxl,
     justifyContent: 'space-between',
   },
   inner: {
@@ -180,7 +191,6 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.md,
     padding: spacing.lg,
     alignItems: 'center',
-    marginBottom: spacing.layoutBottom,
   },
   buttonText: { color: colors.text.dark, fontWeight: '700', fontSize: 16 },
 });

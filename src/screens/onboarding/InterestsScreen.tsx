@@ -137,7 +137,15 @@ export const InterestsScreen = ({ navigation }: Props) => {
   );
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top + spacing.lg }]}>
+    <View
+      style={[
+        styles.container,
+        {
+          paddingTop: insets.top + spacing.lg,
+          paddingBottom: Math.max(insets.bottom, spacing.xxl),
+        },
+      ]}
+    >
       <View style={styles.content}>
         <ProgressBar currentStep={3} totalSteps={4} />
 
@@ -172,7 +180,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.bg.primary,
-    padding: spacing.xxl,
+    paddingHorizontal: spacing.xxl,
     justifyContent: 'space-between',
   },
   content: {
@@ -241,7 +249,6 @@ const styles = StyleSheet.create({
     borderRadius: borderRadius.md,
     padding: spacing.lg,
     alignItems: 'center',
-    marginBottom: spacing.layoutBottom,
   },
   disabledButton: {
     opacity: 0.5,
