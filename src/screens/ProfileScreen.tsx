@@ -5,7 +5,7 @@ import { EaseView } from 'react-native-ease';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { resetUser, setLanguage, setBiometricsEnabled } from '../store/userSlice';
-import { selectUserName, selectUserAge, selectUserBalance } from '../store/selectors/userSelectors';
+import { selectUserName, selectUserAge } from '../store/selectors/userSelectors';
 import { colors, spacing, borderRadius } from '../theme';
 import { t } from '../helpers/i18n';
 
@@ -15,7 +15,6 @@ export const ProfileScreen = () => {
 
   const name = useAppSelector(selectUserName);
   const age = useAppSelector(selectUserAge);
-  const balance = useAppSelector(selectUserBalance) || 10000;
   
   // Direct state selection for fields that don't have dedicated selectors
   const profession = useAppSelector(state => state.user.profession);
@@ -257,7 +256,7 @@ const styles = StyleSheet.create({
   },
   nameText: {
     fontSize: 22,
-    fontWeight: '950',
+    fontWeight: '900',
     color: colors.text.primary,
     marginBottom: 4,
   },

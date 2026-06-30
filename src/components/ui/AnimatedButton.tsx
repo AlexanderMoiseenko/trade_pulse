@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Pressable, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
+import { Pressable, Text, StyleSheet, ViewStyle, TextStyle, StyleProp } from 'react-native';
 import { EaseView } from 'react-native-ease';
 import { colors, spacing, borderRadius } from '../../theme';
 
@@ -7,8 +7,10 @@ interface AnimatedButtonProps {
   title: string;
   onPress: () => void;
   disabled?: boolean;
-  style?: ViewStyle;
-  textStyle?: TextStyle;
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
+  accessibilityLabel?: string;
+  accessibilityRole?: 'button' | 'link' | 'none';
 }
 
 export const AnimatedButton = ({
@@ -17,6 +19,8 @@ export const AnimatedButton = ({
   disabled = false,
   style,
   textStyle,
+  accessibilityLabel,
+  accessibilityRole,
 }: AnimatedButtonProps) => {
   const [pressed, setPressed] = useState(false);
 
@@ -68,6 +72,8 @@ export const AnimatedButton = ({
       onPress={onPress}
       disabled={disabled}
       style={layoutStyle}
+      accessibilityLabel={accessibilityLabel}
+      accessibilityRole={accessibilityRole}
     >
       <EaseView
         animate={{ scale: pressed ? 0.95 : 1 }}
