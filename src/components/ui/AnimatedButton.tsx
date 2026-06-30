@@ -20,18 +20,59 @@ export const AnimatedButton = ({
 }: AnimatedButtonProps) => {
   const [pressed, setPressed] = useState(false);
 
+  // Separate layout-related style properties from visual ones
+  const flattenedStyle = StyleSheet.flatten(style) || {};
+  const {
+    flex,
+    margin,
+    marginHorizontal,
+    marginVertical,
+    marginLeft,
+    marginRight,
+    marginTop,
+    marginBottom,
+    width,
+    height,
+    alignSelf,
+    position,
+    top,
+    bottom,
+    left,
+    right,
+    ...visualStyle
+  } = flattenedStyle as any;
+
+  const layoutStyle = {
+    flex,
+    margin,
+    marginHorizontal,
+    marginVertical,
+    marginLeft,
+    marginRight,
+    marginTop,
+    marginBottom,
+    width,
+    height,
+    alignSelf,
+    position,
+    top,
+    bottom,
+    left,
+    right,
+  };
+
   return (
     <Pressable
       onPressIn={() => !disabled && setPressed(true)}
       onPressOut={() => setPressed(false)}
       onPress={onPress}
       disabled={disabled}
-      style={style}
+      style={layoutStyle}
     >
       <EaseView
         animate={{ scale: pressed ? 0.95 : 1 }}
         transition={{ type: 'spring', damping: 15, stiffness: 200 }}
-        style={[styles.button, disabled && styles.disabledButton]}
+        style={[styles.button, visualStyle, disabled && styles.disabledButton]}
       >
         <Text style={[styles.buttonText, textStyle]}>{title}</Text>
       </EaseView>

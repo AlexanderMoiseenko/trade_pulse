@@ -6,11 +6,13 @@ import { selectIsRegistered } from '../store/selectors/userSelectors';
 import { OnboardingNavigator } from './OnboardingNavigator';
 import { MainTabNavigator } from './MainTabNavigator';
 import { BiometricGateScreen } from '../screens/BiometricGateScreen';
+import { TradeDetailScreen } from '../screens/TradeDetail';
 import { colors } from '../theme';
 
 export type RootStackParamList = {
   OnboardingFlow: undefined;
   Feed: undefined;
+  TradeDetail: { symbol: string };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -45,7 +47,10 @@ export const AppNavigator = () => {
         {!isRegistered ? (
           <Stack.Screen name="OnboardingFlow" component={OnboardingNavigator} />
         ) : (
-          <Stack.Screen name="Feed" component={MainTabNavigator} />
+          <Stack.Group>
+            <Stack.Screen name="Feed" component={MainTabNavigator} />
+            <Stack.Screen name="TradeDetail" component={TradeDetailScreen} />
+          </Stack.Group>
         )}
       </Stack.Navigator>
     </NavigationContainer>

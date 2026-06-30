@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import { EaseView } from 'react-native-ease';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -13,9 +19,9 @@ interface BiometricGateScreenProps {
 
 export const BiometricGateScreen = ({ onUnlock }: BiometricGateScreenProps) => {
   const insets = useSafeAreaInsets();
-  
+
   // Subscribe to Redux language to trigger instant local translation re-renders
-  useAppSelector((state) => state.user.language);
+  useAppSelector(state => state.user.language);
 
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -24,7 +30,7 @@ export const BiometricGateScreen = ({ onUnlock }: BiometricGateScreenProps) => {
   // Slow spring pulse animation effect
   useEffect(() => {
     const interval = setInterval(() => {
-      setPulse((prev) => !prev);
+      setPulse(prev => !prev);
     }, 1500);
     return () => clearInterval(interval);
   }, []);
@@ -35,7 +41,7 @@ export const BiometricGateScreen = ({ onUnlock }: BiometricGateScreenProps) => {
 
     try {
       const rnBiometrics = new ReactNativeBiometrics();
-      const { available, biometryType } = await rnBiometrics.isSensorAvailable();
+      const { available } = await rnBiometrics.isSensorAvailable();
 
       if (!available) {
         setErrorMessage(t.profile.biometricsError);
@@ -70,10 +76,18 @@ export const BiometricGateScreen = ({ onUnlock }: BiometricGateScreenProps) => {
   }, []);
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top + spacing.xxl, paddingBottom: insets.bottom + spacing.xl }]}>
+    <View
+      style={[
+        styles.container,
+        {
+          paddingTop: insets.top + spacing.xxl,
+          paddingBottom: insets.bottom + spacing.xl,
+        },
+      ]}
+    >
       {/* Title */}
       <Text style={styles.appTitle}>TRADE PULSE</Text>
-      
+
       {/* Pulsing Lock Icon */}
       <View style={styles.centerContainer}>
         <EaseView
@@ -91,13 +105,9 @@ export const BiometricGateScreen = ({ onUnlock }: BiometricGateScreenProps) => {
           </View>
         </EaseView>
 
-        <Text style={styles.promptText}>
-          {t.profile.biometricsPrompt}
-        </Text>
+        <Text style={styles.promptText}>{t.profile.biometricsPrompt}</Text>
 
-        {errorMessage && (
-          <Text style={styles.errorText}>{errorMessage}</Text>
-        )}
+        {errorMessage && <Text style={styles.errorText}>{errorMessage}</Text>}
       </View>
 
       {/* Action Footer */}
@@ -105,10 +115,11 @@ export const BiometricGateScreen = ({ onUnlock }: BiometricGateScreenProps) => {
         {isAuthenticating ? (
           <ActivityIndicator size="large" color={colors.accent.green} />
         ) : (
-          <TouchableOpacity style={styles.retryButton} onPress={triggerBiometricScan}>
-            <Text style={styles.retryButtonText}>
-              {t.errorBoundary.retry}
-            </Text>
+          <TouchableOpacity
+            style={styles.retryButton}
+            onPress={triggerBiometricScan}
+          >
+            <Text style={styles.retryButtonText}>{t.errorBoundary.retry}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -126,7 +137,7 @@ const styles = StyleSheet.create({
   },
   appTitle: {
     fontSize: 24,
-    fontWeight: '950',
+    fontWeight: '900',
     color: colors.accent.green,
     letterSpacing: 3,
     marginTop: spacing.xl,

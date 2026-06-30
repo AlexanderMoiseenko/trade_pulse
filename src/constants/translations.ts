@@ -63,6 +63,16 @@ export const translations = {
       totalValue: 'Total Value',
       allocation: 'Asset Allocation',
     },
+    tradeDetail: {
+      buy: 'BUY',
+      sell: 'SELL',
+      high24h: '24h High',
+      low24h: '24h Low',
+      volume24h: '24h Vol',
+      back: 'Back',
+      livePrice: '● Live Market',
+      priceAt: 'Price at',
+    },
   },
   uk: {
     onboarding: {
@@ -127,6 +137,16 @@ export const translations = {
       title: 'Портфоліо',
       totalValue: 'Загальна вартість',
       allocation: 'Розподіл активів',
+    },
+    tradeDetail: {
+      buy: 'КУПИТИ',
+      sell: 'ПРОДАТИ',
+      high24h: '24г Макс',
+      low24h: '24г Мін',
+      volume24h: '24г Об’єм',
+      back: 'Назад',
+      livePrice: '● Живий ринок',
+      priceAt: 'Ціна на',
     },
   },
 } as const;
