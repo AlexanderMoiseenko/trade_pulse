@@ -1,0 +1,23 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "--- [Husky Pre-commit] Running checks ---"
+
+# 1. TypeScript Type Check (on the entire project)
+echo "🔍 Checking TypeScript types..."
+npx tsc --noEmit
+if [ $? -ne 0 ]; then
+  echo "❌ TypeScript check failed! Commit aborted."
+  exit 1
+fi
+
+# 2. Lint and Test staged files
+echo "🧹 Running ESLint & Jest on staged files..."
+npx lint-staged
+if [ $? -ne 0 ]; then
+  echo "❌ Lint or Test check failed! Commit aborted."
+  exit 1
+fi
+
+echo "✅ All checks passed successfully!"
+exit 0

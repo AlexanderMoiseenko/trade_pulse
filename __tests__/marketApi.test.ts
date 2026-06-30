@@ -17,4 +17,10 @@ describe('marketApi configuration', () => {
     expect(endpoint).toBeDefined();
     expect(endpoint.name).toBe('getMarketData');
   });
+
+  test('should define getHistoricalData endpoint correctly', () => {
+    const endpoint = marketApi.endpoints.getHistoricalData;
+    expect(endpoint).toBeDefined();
+    expect(endpoint.name).toBe('getHistoricalData');
+  });
 });
