@@ -32,7 +32,6 @@ export const OfflineToast = () => {
 
       // Auto-hide offline banner after 5 seconds to clear the UI
       const timer = setTimeout(() => {
-        console.log('[OfflineToast] 5s Timeout fired! Setting visible: false');
         setVisible(false);
       }, 5000);
       return () => clearTimeout(timer);

@@ -24,11 +24,9 @@ import {
   BINANCE_WS_URL,
   BINANCE_REST_BASE,
 } from './types';
+import { createLogger } from '../../helpers/logger';
 
-const log = (...args: unknown[]) =>
-  __DEV__ && console.log('[marketApi]', ...args);
-const logError = (...args: unknown[]) =>
-  __DEV__ && console.error('[marketApi]', ...args);
+const logger = createLogger('marketApi');
 
 const CACHE_KEY = 'cached_market_rates';
 const WS_RECONNECT_MS = 3_000;
@@ -53,7 +51,7 @@ export const marketApi = createApi({
               return { data: JSON.parse(cached) as MarketTicker[] };
             }
           } catch (e) {
-            logError('Failed to parse offline cache:', e);
+            logger.error('Failed to parse offline cache:', e);
           }
           return { error: result.error };
         }
@@ -64,7 +62,7 @@ export const marketApi = createApi({
           storage.set(CACHE_KEY, JSON.stringify(data));
           queryApi.dispatch(setOfflineMode(false));
         } catch (e) {
-          logError('Failed to save cache:', e);
+          logger.error('Failed to save cache:', e);
         }
 
         return { data };
@@ -82,11 +80,11 @@ export const marketApi = createApi({
         const connect = () => {
           if (isClosed) return;
 
-          log('Connecting WebSocket...');
+          logger.log('Connecting WebSocket...');
           ws = new WebSocket(BINANCE_WS_URL);
 
           ws.onopen = () => {
-            log('WebSocket connected');
+            logger.log('WebSocket connected');
             // Re-sync state on reconnect (WebSocket might have missed ticks)
             dispatch(
               marketApi.endpoints.getMarketData.initiate(undefined, {
@@ -114,14 +112,14 @@ export const marketApi = createApi({
                 }
               });
             } catch (err) {
-              logError('WS message parse error:', err);
+              logger.error('WS message parse error:', err);
             }
           };
 
-          ws.onerror = err => log('WebSocket error:', err);
+          ws.onerror = err => logger.error('WebSocket error:', err);
 
           ws.onclose = () => {
-            log('WebSocket closed');
+            logger.log('WebSocket closed');
             if (!isClosed) {
               reconnectTimer = setTimeout(connect, WS_RECONNECT_MS);
             }
@@ -144,7 +142,7 @@ export const marketApi = createApi({
           const activeWs = ws as WebSocket | null;
           activeWs?.close();
         } catch (e) {
-          logError('Failed to close WebSocket:', e);
+          logger.error('Failed to close WebSocket:', e);
         }
       },
     }),
