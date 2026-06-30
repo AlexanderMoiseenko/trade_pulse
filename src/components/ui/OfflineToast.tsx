@@ -10,17 +10,15 @@ type ToastType = 'offline' | 'online';
 
 export const OfflineToast = () => {
   const insets = useSafeAreaInsets();
-  const isOffline = useAppSelector((state) => state.user.isOffline);
+  const isOffline = useAppSelector(state => state.user.isOffline);
   const prevIsOfflineRef = useRef(isOffline);
 
   // Subscribe to Redux language to trigger instant local translation re-renders
-  useAppSelector((state) => state.user.language);
+  useAppSelector(state => state.user.language);
 
   const [visible, setVisible] = useState(false);
   const [toastType, setToastType] = useState<ToastType>('offline');
   const [text, setText] = useState('');
-
-  console.log('[OfflineToast] render visible:', visible, 'isOffline:', isOffline, 'toastType:', toastType);
 
   useEffect(() => {
     const prevIsOffline = prevIsOfflineRef.current;
@@ -47,7 +45,6 @@ export const OfflineToast = () => {
 
         // Auto-hide online success banner after 3 seconds
         const timer = setTimeout(() => {
-          console.log('[OfflineToast] 3s Timeout fired! Setting visible: false');
           setVisible(false);
         }, 3000);
         return () => clearTimeout(timer);
@@ -67,10 +64,7 @@ export const OfflineToast = () => {
   return (
     <Pressable
       onPress={handleDismiss}
-      style={[
-        styles.toastWrapper,
-        { top: insets.top + spacing.md },
-      ]}
+      style={[styles.toastWrapper, { top: insets.top + spacing.md }]}
       pointerEvents={visible ? 'auto' : 'none'}
     >
       <EaseView
