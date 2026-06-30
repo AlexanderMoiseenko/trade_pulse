@@ -25,3 +25,16 @@ jest.mock('react-native-ease', () => {
     }),
   };
 });
+
+jest.mock('react-native-gifted-charts', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+  return {
+    LineChart: jest.fn().mockImplementation(({ children, ...props }) => {
+      return React.createElement(View, props, children);
+    }),
+    BarChart: jest.fn().mockImplementation(({ children, ...props }) => {
+      return React.createElement(View, props, children);
+    }),
+  };
+});

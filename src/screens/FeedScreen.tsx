@@ -1,19 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+  ScrollView,
+} from 'react-native';
 import { EaseView } from 'react-native-ease';
-import { useAppSelector } from '../store/hooks';
-import { selectUserName, selectUserBalance } from '../store/selectors/userSelectors';
-import { colors, spacing, borderRadius } from '../theme';
-import { useGetMarketDataQuery, ASSET_NAMES } from '../store/services/marketApi';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
+
+import { useAppSelector } from '../store/hooks';
+import {
+  selectUserName,
+  selectUserBalance,
+} from '../store/selectors/userSelectors';
+import { colors, spacing, borderRadius } from '../theme';
+import { useGetMarketDataQuery } from '../store/services/marketApi';
+import { ASSET_NAMES } from '../store/services/types';
 import { t } from '../helpers/i18n';
 import { Sparkbar } from '../components/ui/Sparkbar';
+import { RootStackParamList } from '../navigation';
+import { formatPrice, formatPercent } from '../helpers/formatters';
 
 export const FeedScreen = () => {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const name = useAppSelector(selectUserName);
   const balance = useAppSelector(selectUserBalance);
   const insets = useSafeAreaInsets();
-  
+
   // Local state to toggle pulse animation with react-native-ease
   const [pulse, setPulse] = useState(true);
 
@@ -29,21 +47,13 @@ export const FeedScreen = () => {
 
   const { data, isLoading, isError, refetch } = useGetMarketDataQuery();
 
-  const formatPrice = (priceStr: string) => {
-    const price = parseFloat(priceStr);
-    if (price >= 1000) {
-      return `$${price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    }
-    return `$${price.toFixed(4)}`;
-  };
-
-  const formatPercent = (percentStr: string) => {
-    const percent = parseFloat(percentStr);
-    return percent >= 0 ? `+${percent.toFixed(2)}%` : `${percent.toFixed(2)}%`;
-  };
-
   return (
-    <View style={[styles.container, { paddingTop: insets.top + spacing.lg, paddingBottom: spacing.lg }]}>
+    <View
+      style={[
+        styles.container,
+        { paddingTop: insets.top + spacing.lg, paddingBottom: spacing.lg },
+      ]}
+    >
       {/* Header */}
       <View style={styles.header}>
         <View>
@@ -72,7 +82,10 @@ export const FeedScreen = () => {
       </View>
 
       {/* Content */}
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         {isLoading && (
           <View style={styles.centerContainer}>
             <ActivityIndicator size="large" color={colors.accent.green} />
@@ -91,12 +104,19 @@ export const FeedScreen = () => {
 
         {!isLoading && !isError && data && (
           <View style={styles.listContainer}>
-            {data.map((item) => {
+            {data.map(item => {
               const name = ASSET_NAMES[item.symbol] || item.symbol;
               const isPositive = parseFloat(item.priceChangePercent) >= 0;
 
               return (
-                <View key={item.symbol} style={styles.card}>
+                <TouchableOpacity
+                  key={item.symbol}
+                  style={styles.card}
+                  onPress={() =>
+                    navigation.navigate('TradeDetail', { symbol: item.symbol })
+                  }
+                  activeOpacity={0.7}
+                >
                   <View style={styles.cardLeft}>
                     <Text style={styles.cardSymbol}>
                       {item.symbol.replace('USDT', '')}
@@ -110,24 +130,30 @@ export const FeedScreen = () => {
                   </View>
 
                   <View style={styles.cardRight}>
-                    <Text style={styles.cardPrice}>{formatPrice(item.lastPrice)}</Text>
+                    <Text style={styles.cardPrice}>
+                      {formatPrice(item.lastPrice)}
+                    </Text>
                     <View
                       style={[
                         styles.percentBadge,
-                        isPositive ? styles.badgePositive : styles.badgeNegative,
+                        isPositive
+                          ? styles.badgePositive
+                          : styles.badgeNegative,
                       ]}
                     >
                       <Text
                         style={[
                           styles.percentText,
-                          isPositive ? styles.textPositive : styles.textNegative,
+                          isPositive
+                            ? styles.textPositive
+                            : styles.textNegative,
                         ]}
                       >
                         {formatPercent(item.priceChangePercent)}
                       </Text>
                     </View>
                   </View>
-                </View>
+                </TouchableOpacity>
               );
             })}
           </View>
@@ -136,7 +162,6 @@ export const FeedScreen = () => {
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -342,4 +367,3 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 });
-

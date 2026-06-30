@@ -20,10 +20,13 @@
     "react-native": "0.86.0",
     "react-native-biometrics": "^3.0.1",
     "react-native-ease": "^0.7.3",
+    "react-native-gifted-charts": "^1.4.77",
+    "react-native-linear-gradient": "^2.8.3",
     "react-native-mmkv": "^4.3.2",
     "react-native-nitro-modules": "^0.35.10",
     "react-native-safe-area-context": "^5.8.0",
     "react-native-screens": "^4.25.2",
+    "react-native-svg": "^15.15.5",
     "react-redux": "^9.3.0",
     "yup": "^1.7.1"
   },
