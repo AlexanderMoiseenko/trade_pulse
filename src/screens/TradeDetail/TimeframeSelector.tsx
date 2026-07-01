@@ -4,6 +4,7 @@ import { EaseView } from 'react-native-ease';
 import { styles } from './styles';
 import { TIMEFRAMES, type Timeframe } from '../../store/services/types';
 import { spacing } from '../../theme';
+import { t } from '../../helpers/i18n';
 
 interface TimeframeSelectorProps {
   timeframe: Timeframe;
@@ -41,8 +42,9 @@ export const TimeframeSelector = ({
             style={[styles.timeframeButton, { width: buttonWidth }]}
             onPress={() => setTimeframe(tf)}
             activeOpacity={0.7}
-            accessibilityLabel={`Select timeframe ${tf}`}
+            accessibilityLabel={t.a11y.timeframeSelect.replace('{{tf}}', tf)}
             accessibilityRole="button"
+            accessibilityState={{ selected: isActive }}
           >
             <Text
               style={[

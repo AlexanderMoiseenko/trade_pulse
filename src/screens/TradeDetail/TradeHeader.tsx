@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, type NavigationProp } from '@react-navigation/native';
 import { t } from '../../helpers/i18n';
+import type { RootStackParamList } from '../../navigation';
 import { styles } from './styles';
 
 interface TradeHeaderProps {
@@ -10,14 +11,14 @@ interface TradeHeaderProps {
 }
 
 export const TradeHeader = ({ symbol, assetName }: TradeHeaderProps) => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   return (
     <View style={styles.header}>
       <TouchableOpacity
         style={styles.backButton}
         onPress={navigation.goBack}
-        accessibilityLabel="Go back"
+        accessibilityLabel={t.a11y.goBack}
         accessibilityRole="button"
       >
         <Text style={styles.backText}>← {t.tradeDetail.back}</Text>

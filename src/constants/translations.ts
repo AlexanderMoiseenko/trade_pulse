@@ -73,6 +73,15 @@ export const translations = {
       livePrice: '● Live Market',
       priceAt: 'Price at',
     },
+    a11y: {
+      goBack: 'Go back',
+      buyAsset: 'Open buy dialog for {{asset}} at {{price}}',
+      sellAsset: 'Open sell dialog for {{asset}} at {{price}}',
+      timeframeSelect: 'Select timeframe {{tf}}',
+      languageSwitch: 'Switch language. Current language is {{lang}}',
+      biometricsToggle: 'Toggle biometric login',
+      assetCard: 'Asset {{name}}, symbol {{symbol}}, {{percentage}} percent of portfolio. Value: {{value}} dollars. Amount: {{amount}}',
+    },
   },
   uk: {
     onboarding: {
@@ -147,6 +156,15 @@ export const translations = {
       back: 'Назад',
       livePrice: '● Живий ринок',
       priceAt: 'Ціна на',
+    },
+    a11y: {
+      goBack: 'Повернутися назад',
+      buyAsset: 'Відкрити форму покупки {{asset}} за {{price}}',
+      sellAsset: 'Відкрити форму продажу {{asset}} за {{price}}',
+      timeframeSelect: 'Обрати таймфрейм {{tf}}',
+      languageSwitch: 'Змінити мову. Поточна мова {{lang}}',
+      biometricsToggle: 'Увімкнути або вимкнути біометричний вхід',
+      assetCard: 'Актив {{name}}, символ {{symbol}}, {{percentage}} відсотків портфелю. Вартість: {{value}} доларів. Кількість: {{amount}}',
     },
   },
 } as const;

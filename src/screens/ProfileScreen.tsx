@@ -122,6 +122,11 @@ export const ProfileScreen = () => {
                 style={styles.segmentedButton}
                 onPress={() => dispatch(setLanguage('en'))}
                 activeOpacity={0.7}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityState={{ selected: currentLang === 'en' }}
+                accessibilityLabel="English"
+                accessibilityHint={t.a11y.languageSwitch.replace('{{lang}}', 'English')}
               >
                 <Text
                   style={[
@@ -138,6 +143,11 @@ export const ProfileScreen = () => {
                 style={styles.segmentedButton}
                 onPress={() => dispatch(setLanguage('uk'))}
                 activeOpacity={0.7}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityState={{ selected: currentLang === 'uk' }}
+                accessibilityLabel="Українська"
+                accessibilityHint={t.a11y.languageSwitch.replace('{{lang}}', 'Українська')}
               >
                 <Text
                   style={[
@@ -169,6 +179,10 @@ export const ProfileScreen = () => {
                 style={styles.segmentedButton}
                 onPress={() => handleBiometricsToggle(false)}
                 activeOpacity={0.7}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityState={{ selected: !isBiometricsEnabled }}
+                accessibilityHint={t.a11y.biometricsToggle}
               >
                 <Text
                   style={[
@@ -185,6 +199,10 @@ export const ProfileScreen = () => {
                 style={styles.segmentedButton}
                 onPress={() => handleBiometricsToggle(true)}
                 activeOpacity={0.7}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityState={{ selected: isBiometricsEnabled }}
+                accessibilityHint={t.a11y.biometricsToggle}
               >
                 <Text
                   style={[
