@@ -73,6 +73,7 @@ export const BiometricGateScreen = ({ onUnlock }: BiometricGateScreenProps) => {
   // Run on mount
   useEffect(() => {
     triggerBiometricScan();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

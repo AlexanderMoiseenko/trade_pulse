@@ -14,10 +14,10 @@ type Tab = 'markets' | 'portfolio' | 'profile';
 
 // Custom lightweight vector icons built with pure React Native Views
 const MarketsIcon = ({ color }: { color: string }) => (
-  <View style={[styles.iconContainer, { flexDirection: 'row', alignItems: 'flex-end' }]}>
-    <View style={[styles.marketsBar, { height: 8, backgroundColor: color }]} />
-    <View style={[styles.marketsBar, { height: 14, backgroundColor: color }]} />
-    <View style={[styles.marketsBar, { height: 11, backgroundColor: color }]} />
+  <View style={[styles.iconContainer, styles.marketsIconContainer]}>
+    <View style={[styles.marketsBar, [styles.marketsBar1, { backgroundColor: color }]]} />
+    <View style={[styles.marketsBar, [styles.marketsBar2, { backgroundColor: color }]]} />
+    <View style={[styles.marketsBar, [styles.marketsBar3, { backgroundColor: color }]]} />
   </View>
 );
 
@@ -214,4 +214,8 @@ const styles = StyleSheet.create({
   inactiveText: {
     color: colors.text.secondary,
   },
+  marketsIconContainer: { flexDirection: 'row', alignItems: 'flex-end' },
+  marketsBar1: { height: 8 },
+  marketsBar2: { height: 14 },
+  marketsBar3: { height: 11 },
 });

@@ -105,7 +105,7 @@ export const FeedScreen = () => {
         {!isLoading && !isError && data && (
           <View style={styles.listContainer}>
             {data.map(item => {
-              const name = ASSET_NAMES[item.symbol] || item.symbol;
+              const assetName = ASSET_NAMES[item.symbol] || item.symbol;
               const isPositive = parseFloat(item.priceChangePercent) >= 0;
 
               return (
@@ -122,7 +122,7 @@ export const FeedScreen = () => {
                       {item.symbol.replace('USDT', '')}
                       <Text style={styles.cardSymbolSub}> / USDT</Text>
                     </Text>
-                    <Text style={styles.cardName}>{name}</Text>
+                    <Text style={styles.cardName}>{assetName}</Text>
                   </View>
 
                   <View style={styles.cardCenter} pointerEvents="none">

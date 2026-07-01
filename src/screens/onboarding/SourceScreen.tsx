@@ -4,7 +4,6 @@ import {
   Text,
   View,
   TextInput,
-  TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
 import { useFormik } from 'formik';

@@ -23,7 +23,7 @@ export const ProgressBar = React.memo(
         duration: 300,
         useNativeDriver: false, // width is not supported by native driver, but this is a simple layout pass, so it's fine
       }).start();
-    }, [targetProgress]);
+    }, [targetProgress, animatedWidth]);
 
     // Transform numeric value to percentage for style
     const widthInterpolation = animatedWidth.interpolate({

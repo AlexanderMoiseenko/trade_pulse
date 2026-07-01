@@ -4,7 +4,6 @@ import {
   Text,
   View,
   TextInput,
-  TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native';
 import { useFormik } from 'formik';
@@ -53,6 +52,7 @@ export const NameAgeScreen = ({ navigation }: Props) => {
         .min(18, t.onboarding.yupAgeMin)
         .required(t.onboarding.yupAgeRequired),
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentLanguage]);
 
   const formik = useFormik({

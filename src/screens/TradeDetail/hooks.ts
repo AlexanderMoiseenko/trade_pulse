@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { colors } from '../../theme';
 import { useGetHistoricalDataQuery } from '../../store/services/marketApi';
-import type { ChartPoint, Timeframe } from '../../store/services/types';
+import type { Timeframe } from '../../store/services/types';
 
 /**
  * Hook for price text color flashing (green on rise, red on drop)

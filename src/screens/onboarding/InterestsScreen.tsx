@@ -110,7 +110,7 @@ export const InterestsScreen = ({ navigation }: Props) => {
 
   const toggleTag = useCallback((tag: string) => {
     setSelected(prev =>
-      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag],
+      prev.includes(tag) ? prev.filter(item => item !== tag) : [...prev, tag],
     );
   }, []);
 
